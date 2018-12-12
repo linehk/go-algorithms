@@ -1,6 +1,6 @@
-// Package doublyCycleLinkedList implements doubly cycle linked-list with
+// Package doublyCircularLinkedList implements doubly circular linked-list with
 // a head node.
-package doublyCycleLinkedList
+package doublyCircularLinkedList
 
 import (
 	"errors"

@@ -1,6 +1,6 @@
-// Package cycleArrayQueue implements queue by slice.
+// Package circularArrayQueue implements queue by slice.
 // elements[] in memory doesn't in order.
-package cycleArrayQueue
+package circularArrayQueue
 
 import (
 	"errors"

@@ -1,4 +1,4 @@
-package cycleSingleLinkedList
+package doublyCircularLinkedList
 
 import (
 	"testing"

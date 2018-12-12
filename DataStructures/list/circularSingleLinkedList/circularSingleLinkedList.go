@@ -1,6 +1,6 @@
-// Package cycleSingleLinkedList implements cycle single linked-list with
+// Package circularSingleLinkedList implements circular single linked-list with
 // a head node.
-package cycleSingleLinkedList
+package circularSingleLinkedList
 
 import (
 	"errors"

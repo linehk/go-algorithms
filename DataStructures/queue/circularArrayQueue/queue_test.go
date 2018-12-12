@@ -1,4 +1,4 @@
-package cycleArrayQueue
+package circularArrayQueue
 
 import (
 	"testing"
