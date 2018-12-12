@@ -1,13 +1,14 @@
 package selectionSort
 
-func SelectionSort(array []int) {
-	for i := 0; i < len(array); i++ {
+func SelectionSort(elements []int) {
+	l := len(elements)
+	for i := 0; i < l; i++ {
 		minIndex := i
-		for j := i; j < len(array); j++ {
-			if array[j] < array[minIndex] {
+		for j := i + 1; j < l; j++ {
+			if elements[j] < elements[minIndex] {
 				minIndex = j
 			}
 		}
-		Swap(array, i, minIndex)
+		elements[i], elements[minIndex] = elements[minIndex], elements[i]
 	}
 }
