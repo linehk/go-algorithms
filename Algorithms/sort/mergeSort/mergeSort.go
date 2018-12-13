@@ -10,6 +10,8 @@ func sort(elements []int, aux []int, lo, hi int) {
 	if hi <= lo {
 		return
 	}
+	// mid := int(uint(lo+hi) >> 1)
+	// mid is left part last element index
 	mid := lo + (hi-lo)/2
 	sort(elements, aux, lo, mid)
 	sort(elements, aux, mid+1, hi)
@@ -22,7 +24,7 @@ func merge(elements []int, aux []int, lo, mid, hi int) {
 	}
 
 	i := lo
-	j := mid + 1
+	j := mid + 1 // right part begin index
 
 	for k := lo; k <= hi; k++ {
 		if i > mid {
@@ -34,7 +36,7 @@ func merge(elements []int, aux []int, lo, mid, hi int) {
 		} else if aux[j] < aux[i] {
 			elements[k] = aux[j]
 			j++
-		} else {
+		} else if aux[i] < aux[j] {
 			elements[k] = aux[i]
 			i++
 		}

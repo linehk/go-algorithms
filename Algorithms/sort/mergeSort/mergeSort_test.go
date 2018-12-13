@@ -8,9 +8,12 @@ func TestMergeSort(t *testing.T) {
 	tests := []struct {
 		input []int
 	}{
-		{[]int{4, 3, 2, 1, 0}},
+		{[]int{0}},
+		{[]int{0, 1}},
+		{[]int{1, 0}},
 		{[]int{2, 1, 0}},
 		{[]int{3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		MergeSort(tt.input)
