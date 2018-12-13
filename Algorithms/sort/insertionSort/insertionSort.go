@@ -19,8 +19,8 @@ func InsertSortX(elements []int) {
 	for i := l - 1; i > 0; i-- {
 		if elements[i] < elements[i-1] {
 			elements[i], elements[i-1] = elements[i-1], elements[i]
+			exchanges++
 		}
-		exchanges++
 	}
 	if exchanges == 0 {
 		return
@@ -28,8 +28,8 @@ func InsertSortX(elements []int) {
 
 	// insertion sort with half-exchanges
 	for i := 2; i < l; i++ {
-		j := i
 		v := elements[i]
+		j := i
 		for ; v < elements[j-1]; j-- {
 			elements[j] = elements[j-1]
 		}
