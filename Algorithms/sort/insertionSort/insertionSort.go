@@ -36,3 +36,27 @@ func InsertSortX(elements []int) {
 		elements[j] = v
 	}
 }
+
+func BinaryInsertionSort(elements []int) {
+	l := len(elements)
+	for i := 1; i < l; i++ {
+		// lo = should insert index
+		v := elements[i]
+		lo := 0
+		hi := i
+		for lo < hi {
+			mid := lo + (hi-lo)/2
+			if v < elements[mid] {
+				hi = mid
+			} else {
+				lo = mid + 1
+			}
+		}
+
+		// move to right
+		for j := i; j > lo; j-- {
+			elements[j] = elements[j-1]
+		}
+		elements[lo] = v
+	}
+}
