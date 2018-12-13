@@ -1,17 +1,15 @@
 package binarySearch
 
-func BinarySearch(array []int, key int) bool {
+func BinarySearch(elements []int, key int) bool {
 	lo := 0
-	hi := len(array) - 1
+	hi := len(elements) - 1
 	for lo <= hi {
 		mid := lo + (hi-lo)/2
-		if key > array[mid] {
+		if key > elements[mid] {
 			lo = mid + 1
-		}
-		if key < array[mid] {
+		} else if key < elements[mid] {
 			hi = mid - 1
-		}
-		if key == array[mid] {
+		} else {
 			return true
 		}
 	}
