@@ -87,3 +87,23 @@ func indexMerge(elements, index, aux []int, lo, mid, hi int) {
 		}
 	}
 }
+
+func BottomUpMergeSort(elements []int) {
+	l := len(elements)
+	aux := make([]int, l)
+	for length := 1; length < l; length *= 2 {
+		for lo := 0; lo < l-length; lo += 2 * length {
+			mid := lo + length - 1
+			hi := min(lo+2*length-1, l-1)
+			merge(elements, aux, lo, mid, hi)
+		}
+	}
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	} else {
+		return b
+	}
+}
