@@ -42,3 +42,48 @@ func merge(elements, aux []int, lo, mid, hi int) {
 		}
 	}
 }
+
+func IndexMergeSort(elements []int) []int {
+	l := len(elements)
+	index := make([]int, l)
+	for i := 0; i < l; i++ {
+		index[i] = i
+	}
+	aux := make([]int, l)
+	indexSort(elements, index, aux, 0, l-1)
+	return index
+}
+
+func indexSort(elements, index, aux []int, lo, hi int) {
+	if lo >= hi {
+		return
+	}
+	mid := lo + (hi-lo)/2
+	indexSort(elements, index, aux, lo, mid)
+	indexSort(elements, index, aux, mid+1, hi)
+	indexMerge(elements, index, aux, lo, mid, hi)
+}
+
+func indexMerge(elements, index, aux []int, lo, mid, hi int) {
+	for k := lo; k <= hi; k++ {
+		aux[k] = index[k]
+	}
+
+	i := lo
+	j := mid + 1
+	for k := lo; k <= hi; k++ {
+		if i > mid {
+			index[k] = aux[j]
+			j++
+		} else if j > hi {
+			index[k] = aux[i]
+			i++
+		} else if elements[aux[i]] < elements[aux[j]] {
+			index[k] = aux[i]
+			i++
+		} else if elements[aux[j]] < elements[aux[i]] {
+			index[k] = aux[j]
+			j++
+		}
+	}
+}
