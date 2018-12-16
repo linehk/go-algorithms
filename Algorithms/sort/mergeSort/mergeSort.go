@@ -6,7 +6,7 @@ func MergeSort(elements []int) {
 	sort(elements, aux, 0, l-1)
 }
 
-func sort(elements []int, aux []int, lo, hi int) {
+func sort(elements, aux []int, lo, hi int) {
 	if lo >= hi {
 		return
 	}
@@ -18,7 +18,7 @@ func sort(elements []int, aux []int, lo, hi int) {
 	merge(elements, aux, lo, mid, hi)
 }
 
-func merge(elements []int, aux []int, lo, mid, hi int) {
+func merge(elements, aux []int, lo, mid, hi int) {
 	for k := lo; k <= hi; k++ {
 		aux[k] = elements[k]
 	}
