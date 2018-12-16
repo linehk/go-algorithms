@@ -7,7 +7,7 @@ func MergeSort(elements []int) {
 }
 
 func sort(elements []int, aux []int, lo, hi int) {
-	if hi <= lo {
+	if lo >= hi {
 		return
 	}
 	// mid := int(uint(lo+hi) >> 1)
@@ -33,12 +33,12 @@ func merge(elements []int, aux []int, lo, mid, hi int) {
 		} else if j > hi {
 			elements[k] = aux[i]
 			i++
-		} else if aux[j] < aux[i] {
-			elements[k] = aux[j]
-			j++
 		} else if aux[i] < aux[j] {
 			elements[k] = aux[i]
 			i++
+		} else if aux[j] < aux[i] {
+			elements[k] = aux[j]
+			j++
 		}
 	}
 }
