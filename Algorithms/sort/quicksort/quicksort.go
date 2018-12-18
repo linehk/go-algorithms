@@ -1,5 +1,7 @@
 package quicksort
 
+var cutoff = 20
+
 func QuickSort(elements []int) {
 	sort(elements, 0, len(elements)-1)
 }
@@ -8,9 +10,24 @@ func sort(elements []int, lo, hi int) {
 	if lo >= hi {
 		return
 	}
+	// n := hi - lo + 1
+	// if n <= cutoff {
+	// 	insertionSort(elements, lo, hi+1)
+	// 	return
+	// }
 	p := partition(elements, lo, hi)
 	sort(elements, lo, p-1)
 	sort(elements, p+1, hi)
+}
+
+func insertionSort(elements []int, lo, hi int) {
+	for i := lo + 1; i < hi; i++ {
+		for j := i; j > lo; j-- {
+			if elements[j] < elements[j-1] {
+				elements[j], elements[j-1] = elements[j-1], elements[j]
+			}
+		}
+	}
 }
 
 func partition(elements []int, lo, hi int) int {
@@ -18,6 +35,7 @@ func partition(elements []int, lo, hi int) int {
 	j := hi + 1
 
 	// pivotIndex, pivot := getPivotMid(elements, lo, hi)
+	// pivotIndex, pivot := getPivotMedian(elements, lo, hi)
 	pivotIndex, pivot := getPivot(elements, lo, hi)
 	elements[lo], elements[pivotIndex] = elements[pivotIndex], elements[lo]
 	pivotIndex = lo
@@ -60,6 +78,20 @@ func getPivot(elements []int, lo, hi int) (int, int) {
 
 func getPivotMid(elements []int, lo, hi int) (int, int) {
 	mid := lo + (hi-lo)/2
+	return mid, elements[mid]
+}
+
+func getPivotMedian(elements []int, lo, hi int) (int, int) {
+	mid := lo + (hi-lo)/2
+	if elements[lo] < elements[mid] {
+		elements[lo], elements[mid] = elements[mid], elements[lo]
+	}
+	if elements[hi] < elements[lo] {
+		elements[hi], elements[lo] = elements[lo], elements[hi]
+		if elements[lo] < elements[mid] {
+			elements[lo], elements[mid] = elements[mid], elements[lo]
+		}
+	}
 	return mid, elements[mid]
 }
 

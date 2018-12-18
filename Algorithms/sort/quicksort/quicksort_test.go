@@ -44,13 +44,6 @@ func TestQuick3way(t *testing.T) {
 	}
 }
 
-func TestPartition(t *testing.T) {
-	input := []int{0, 1}
-	j := partition(input, 0, len(input)-1)
-	t.Log(input)
-	t.Log(j)
-}
-
 func isSorted(elements []int) bool {
 	l := len(elements)
 	for i := 1; i < l; i++ {
