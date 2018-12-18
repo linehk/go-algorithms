@@ -16,7 +16,12 @@ func sort(elements []int, lo, hi int) {
 func partition(elements []int, lo, hi int) int {
 	i := lo
 	j := hi + 1
-	pivot := elements[lo]
+
+	// pivotIndex, pivot := getPivotMid(elements, lo, hi)
+	pivotIndex, pivot := getPivot(elements, lo, hi)
+	elements[lo], elements[pivotIndex] = elements[pivotIndex], elements[lo]
+	pivotIndex = lo
+
 	for {
 		for {
 			i++
@@ -45,8 +50,17 @@ func partition(elements []int, lo, hi int) int {
 		}
 		elements[i], elements[j] = elements[j], elements[i]
 	}
-	elements[lo], elements[j] = elements[j], elements[lo]
+	elements[pivotIndex], elements[j] = elements[j], elements[pivotIndex]
 	return j
+}
+
+func getPivot(elements []int, lo, hi int) (int, int) {
+	return lo, elements[lo]
+}
+
+func getPivotMid(elements []int, lo, hi int) (int, int) {
+	mid := lo + (hi-lo)/2
+	return mid, elements[mid]
 }
 
 func Quick3way(elements []int) {
