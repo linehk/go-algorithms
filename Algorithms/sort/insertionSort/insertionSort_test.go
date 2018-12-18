@@ -9,7 +9,12 @@ func TestInsertionSort(t *testing.T) {
 		input []int
 	}{
 		{[]int{0}},
-		{[]int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}},
+		{[]int{0, 1}},
+		{[]int{1, 0}},
+		{[]int{2, 1, 0}},
+		{[]int{3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		InsertionSort(tt.input)
@@ -25,7 +30,12 @@ func TestInsertionSortX(t *testing.T) {
 		input []int
 	}{
 		{[]int{0}},
-		{[]int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}},
+		{[]int{0, 1}},
+		{[]int{1, 0}},
+		{[]int{2, 1, 0}},
+		{[]int{3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		InsertSortX(tt.input)
@@ -41,7 +51,12 @@ func TestBinaryInsertionSort(t *testing.T) {
 		input []int
 	}{
 		{[]int{0}},
-		{[]int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}},
+		{[]int{0, 1}},
+		{[]int{1, 0}},
+		{[]int{2, 1, 0}},
+		{[]int{3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		BinaryInsertionSort(tt.input)
