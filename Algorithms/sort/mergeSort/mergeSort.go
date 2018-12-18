@@ -36,7 +36,7 @@ func merge(elements, aux []int, lo, mid, hi int) {
 		} else if aux[i] < aux[j] {
 			elements[k] = aux[i]
 			i++
-		} else if aux[j] < aux[i] {
+		} else {
 			elements[k] = aux[j]
 			j++
 		}
@@ -81,7 +81,7 @@ func indexMerge(elements, index, aux []int, lo, mid, hi int) {
 		} else if elements[aux[i]] < elements[aux[j]] {
 			index[k] = aux[i]
 			i++
-		} else if elements[aux[j]] < elements[aux[i]] {
+		} else {
 			index[k] = aux[j]
 			j++
 		}

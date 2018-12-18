@@ -14,6 +14,7 @@ func TestMergeSort(t *testing.T) {
 		{[]int{2, 1, 0}},
 		{[]int{3, 2, 1, 0}},
 		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		MergeSort(tt.input)
@@ -33,6 +34,7 @@ func TestIndexMergeSort(t *testing.T) {
 		{[]int{2, 1, 0}},
 		{[]int{3, 2, 1, 0}},
 		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		index := IndexMergeSort(tt.input)
@@ -56,6 +58,7 @@ func TestBottomUpMergeSort(t *testing.T) {
 		{[]int{2, 1, 0}},
 		{[]int{3, 2, 1, 0}},
 		{[]int{4, 3, 2, 1, 0}},
+		{[]int{4, 3, 2, 1, 0, 4, 3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
 		BottomUpMergeSort(tt.input)
