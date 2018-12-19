@@ -48,19 +48,6 @@ func (h heap) Max() (int, error) {
 	return h.elements[1], nil
 }
 
-func (h *heap) Insert(v int) {
-	// if h.len+1 > h.cap {
-	// 	return errors.New("priority queue is full")
-	// }
-	if h.len == h.cap {
-		h.resize(2 * (h.cap + 1))
-	}
-	h.len++
-	h.elements[h.len] = v
-	h.swim(h.len)
-	// return nil
-}
-
 func (h *heap) DelMax() (int, error) {
 	if h.len == 0 {
 		return 0, errors.New("priority queue is empty")
@@ -73,6 +60,19 @@ func (h *heap) DelMax() (int, error) {
 		h.resize((h.cap + 1) / 2)
 	}
 	return max, nil
+}
+
+func (h *heap) Insert(v int) {
+	// if h.len+1 > h.cap {
+	// 	return errors.New("priority queue is full")
+	// }
+	if h.len == h.cap {
+		h.resize(2 * (h.cap + 1))
+	}
+	h.len++
+	h.elements[h.len] = v
+	h.swim(h.len)
+	// return nil
 }
 
 func (h *heap) swim(k int) {
@@ -96,6 +96,14 @@ func (h *heap) sink(k int) {
 	}
 }
 
+func (h *heap) resize(cap int) {
+	newElements := make([]int, cap)
+	for i := 1; i <= h.len; i++ {
+		newElements[i] = h.elements[i]
+	}
+	h.elements = newElements
+}
+
 func (h heap) isMaxHeap() bool {
 	return h.isKMaxHeap(1)
 }
@@ -113,12 +121,4 @@ func (h heap) isKMaxHeap(k int) bool {
 		return false
 	}
 	return h.isKMaxHeap(left) && h.isKMaxHeap(right)
-}
-
-func (h *heap) resize(cap int) {
-	newElements := make([]int, cap)
-	for i := 1; i <= h.len; i++ {
-		newElements[i] = h.elements[i]
-	}
-	h.elements = newElements
 }
