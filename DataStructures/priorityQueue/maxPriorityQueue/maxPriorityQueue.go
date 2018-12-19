@@ -76,7 +76,7 @@ func (h *heap) Insert(v int) {
 }
 
 func (h *heap) swim(k int) {
-	for k > 1 && h.elements[k/2] < h.elements[k] {
+	for k > 1 && h.elements[k] > h.elements[k/2] {
 		h.elements[k], h.elements[k/2] = h.elements[k/2], h.elements[k]
 		k = k / 2
 	}
@@ -91,7 +91,7 @@ func (h *heap) sink(k int) {
 		if h.elements[j] < h.elements[k] {
 			break
 		}
-		h.elements[k], h.elements[j] = h.elements[j], h.elements[k]
+		h.elements[j], h.elements[k] = h.elements[k], h.elements[j]
 		k = j
 	}
 }
