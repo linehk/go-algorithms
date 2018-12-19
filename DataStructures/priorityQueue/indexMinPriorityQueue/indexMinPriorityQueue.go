@@ -129,6 +129,7 @@ func (h *heap) DecreaseKey(i, k int) error {
 	if !isContains {
 		return errors.New("index is not in the priority queue")
 	}
+	// need h.keys[i] > key
 	if h.keys[i] <= k {
 		return errors.New("key isn't small that keys[i]")
 	}
@@ -148,6 +149,7 @@ func (h *heap) IncreaseKey(i, k int) error {
 	if !isContains {
 		return errors.New("index is not in the priority queue")
 	}
+	// need h.keys[i] < key
 	if h.keys[i] >= k {
 		return errors.New("key isn't big that keys[i]")
 	}
