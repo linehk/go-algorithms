@@ -80,9 +80,7 @@ func TestInsert(t *testing.T) {
 	}
 	for i, tt := range tests {
 		p := NewByArray(tt.input)
-		if err := p.Insert(tt.insertValue); err != nil {
-			t.Error(err)
-		}
+		p.Insert(tt.insertValue)
 		if got := p.isMaxHeap(); !got {
 			t.Errorf("%v. got %v, want %v", i, got, true)
 		}

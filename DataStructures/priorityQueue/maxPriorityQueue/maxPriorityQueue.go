@@ -48,7 +48,7 @@ func (h heap) Max() (int, error) {
 	return h.elements[1], nil
 }
 
-func (h *heap) Insert(v int) error {
+func (h *heap) Insert(v int) {
 	// if h.len+1 > h.cap {
 	// 	return errors.New("priority queue is full")
 	// }
@@ -58,7 +58,7 @@ func (h *heap) Insert(v int) error {
 	h.len++
 	h.elements[h.len] = v
 	h.swim(h.len)
-	return nil
+	// return nil
 }
 
 func (h *heap) DelMax() (int, error) {
