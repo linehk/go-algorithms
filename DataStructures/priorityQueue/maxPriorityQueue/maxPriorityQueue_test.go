@@ -1,4 +1,4 @@
-package priorityQueue
+package maxPriorityQueue
 
 import (
 	"testing"
@@ -8,6 +8,7 @@ func TestNewByArray(t *testing.T) {
 	tests := []struct {
 		input []int
 	}{
+		{[]int{}},
 		{[]int{0}},
 		{[]int{0, 1}},
 		{[]int{0, 0}},
@@ -23,8 +24,8 @@ func TestNewByArray(t *testing.T) {
 
 func TestMax(t *testing.T) {
 	tests := []struct {
-		input   []int
-		wantMax int
+		input []int
+		want  int
 	}{
 		{[]int{0}, 0},
 		{[]int{0, 1}, 1},
@@ -37,44 +38,53 @@ func TestMax(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		if got != tt.wantMax {
-			t.Errorf("%v. got %v, want %v", i, got, tt.wantMax)
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
 	}
 }
 
-func TestDelMaxAndInsert(t *testing.T) {
+func TestDelMax(t *testing.T) {
 	tests := []struct {
-		input       []int
-		wantDelMax  int
-		insertValue int
-		wantMax     int
+		input []int
+		want  int
 	}{
-		{[]int{0}, 0, 1, 1},
-		{[]int{0, 1}, 1, -1, 0},
-		{[]int{0, 1, 2, 3, 4, 5}, 5, 10, 10},
-		{[]int{0, 1, 2, 3, 4, 5}, 5, 3, 4},
+		{[]int{0}, 0},
+		{[]int{0, 1}, 1},
+		{[]int{0, 0}, 0},
+		{[]int{0, 1, 2, 3, 4, 5, 6}, 6},
 	}
 	for i, tt := range tests {
 		p := NewByArray(tt.input)
-		gotDelMax, err := p.DelMax()
+		got, err := p.DelMax()
 		if err != nil {
 			t.Error(err)
 		}
-		if gotDelMax != tt.wantDelMax {
-			t.Errorf("%v. got %v, want %v", i, gotDelMax, tt.wantDelMax)
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
-
-		p.Insert(tt.insertValue)
 		if isMaxHeap := p.isMaxHeap(); !isMaxHeap {
 			t.Errorf("%v. got %v, want %v", i, isMaxHeap, true)
 		}
-		gotMax, err := p.Max()
-		if err != nil {
+	}
+}
+
+func TestInsert(t *testing.T) {
+	tests := []struct {
+		input       []int
+		insertValue int
+	}{
+		{[]int{0}, 0},
+		{[]int{0, 0}, 1},
+		{[]int{0, 1, 2, 3}, 4},
+	}
+	for i, tt := range tests {
+		p := NewByArray(tt.input)
+		if err := p.Insert(tt.insertValue); err != nil {
 			t.Error(err)
 		}
-		if gotMax != tt.wantMax {
-			t.Errorf("%v. got %v, want %v", i, gotMax, tt.wantMax)
+		if got := p.isMaxHeap(); !got {
+			t.Errorf("%v. got %v, want %v", i, got, true)
 		}
 	}
 }
