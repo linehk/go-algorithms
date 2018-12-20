@@ -22,7 +22,7 @@ func New(cap int) *heap {
 	h := new(heap)
 	h.elements = make([]int, cap+1)
 	h.len = 0
-	h.cap = cap
+	h.cap = cap + 1
 	return h
 }
 
@@ -31,7 +31,7 @@ func NewByArray(elements []int) *heap {
 	h := new(heap)
 	h.elements = make([]int, l+1)
 	h.len = l
-	h.cap = l
+	h.cap = l + 1
 	for i := 0; i < l; i++ {
 		h.elements[i+1] = elements[i]
 	}
@@ -56,8 +56,8 @@ func (h *heap) DelMax() (int, error) {
 	h.elements[1], h.elements[h.len] = h.elements[h.len], h.elements[1]
 	h.len--
 	h.sink(1)
-	if h.len > 0 && (h.len == (h.cap / 4)) {
-		h.resize((h.cap + 1) / 2)
+	if (h.len > 0) && (h.len == ((h.cap - 1) / 4)) {
+		h.resize(h.cap / 2)
 	}
 	return max, nil
 }
@@ -66,8 +66,8 @@ func (h *heap) Insert(v int) {
 	// if h.len+1 > h.cap {
 	// 	return errors.New("priority queue is full")
 	// }
-	if h.len == h.cap {
-		h.resize(2 * (h.cap + 1))
+	if h.len == h.cap-1 {
+		h.resize(2 * h.cap)
 	}
 	h.len++
 	h.elements[h.len] = v
