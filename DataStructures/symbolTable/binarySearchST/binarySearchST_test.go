@@ -168,7 +168,7 @@ func TestFloorAndCeiling(t *testing.T) {
 	}
 }
 
-func TestSelectKth(t *testing.T) {
+func TestSelect(t *testing.T) {
 	tests := []struct {
 		input map[int]int
 		k     int
@@ -181,7 +181,7 @@ func TestSelectKth(t *testing.T) {
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
-		got, err := s.SelectKth(tt.k)
+		got, err := s.Select(tt.k)
 		if err != nil {
 			t.Error(err)
 		}

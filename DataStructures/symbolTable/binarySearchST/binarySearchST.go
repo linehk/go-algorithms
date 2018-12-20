@@ -142,7 +142,7 @@ func (s st) Max() (int, error) {
 	return s.keys[s.len-1], nil
 }
 
-func (s st) SelectKth(k int) (int, error) {
+func (s st) Select(k int) (int, error) {
 	if k < 0 || k >= s.len {
 		return 0, errors.New("illegal index k")
 	}
