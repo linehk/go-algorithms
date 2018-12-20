@@ -58,8 +58,7 @@ func (s *st) Put(key, value int) {
 }
 
 func (s *st) Delete(key int) {
-	sts := st{}
-	s.first = sts.deleteNode(s.first, key)
+	s.first = s.deleteNode(s.first, key)
 }
 
 func (s *st) deleteNode(x *node, key int) *node {
@@ -70,7 +69,6 @@ func (s *st) deleteNode(x *node, key int) *node {
 		s.len--
 		return x.next
 	}
-	sts := st{}
-	x.next = sts.deleteNode(x.next, key)
+	x.next = s.deleteNode(x.next, key)
 	return x
 }
