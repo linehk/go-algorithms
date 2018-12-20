@@ -21,12 +21,12 @@ func New() *st {
 	return s
 }
 
-func (s *st) Contains(key int) (bool, error) {
+func (s st) Contains(key int) bool {
 	_, err := s.Get(key)
 	if err != nil {
-		return false, err
+		return false
 	}
-	return true, nil
+	return true
 }
 
 func (s st) Get(key int) (int, error) {

@@ -4,36 +4,94 @@ import (
 	"testing"
 )
 
-func TestSequentialSearchST(t *testing.T) {
-	st := New()
-	keys := []int{0, 1}
-	values := []int{1, 2}
-	st.Put(keys[0], values[0])
-	v, err := st.Get(keys[0])
-	if err != nil {
-		t.Error(err)
+func TestContains(t *testing.T) {
+	tests := []struct {
+		input        map[int]int
+		key          int
+		wantContains bool
+	}{
+		{map[int]int{0: 0}, 0, true},
+		{map[int]int{0: 0}, 1, false},
+		{map[int]int{0: 0, 1: 1, 2: 2}, 2, true},
 	}
-	if v != values[0] {
-		t.Errorf("got %v, want %v", v, values[0])
+	for i, tt := range tests {
+		s := New()
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+		if gotContains := s.Contains(tt.key); gotContains != tt.wantContains {
+			t.Errorf("%v. got %v, want %v", i, gotContains, tt.wantContains)
+		}
 	}
+}
 
-	isContains, err := st.Contains(keys[0])
-	if !isContains {
-		t.Errorf("got %v, want %v", !isContains, true)
+func TestGet(t *testing.T) {
+	tests := []struct {
+		input map[int]int
+		key   int
+		want  int
+	}{
+		{map[int]int{0: 0}, 0, 0},
+		{map[int]int{0: 0, 1: 1, 2: 2}, 1, 1},
+		{map[int]int{0: 0, 1: 1, 2: 2}, 3, 0},
 	}
+	for i, tt := range tests {
+		s := New()
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+		got, _ := s.Get(tt.key)
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
+		}
+	}
+}
 
-	st.Put(keys[1], values[1])
-	v, err = st.Get(keys[1])
-	if err != nil {
-		t.Error(err)
+func TestPut(t *testing.T) {
+	tests := []struct {
+		input map[int]int
+		key   int
+		value int
+		want  int
+	}{
+		{map[int]int{0: 0}, 0, 1, 1},
 	}
-	if v != values[1] {
-		t.Errorf("got %v, want %v", v, values[1])
+	for i, tt := range tests {
+		s := New()
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+		s.Put(tt.key, tt.value)
+		got, err := s.Get(tt.key)
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
+		}
 	}
+}
 
-	st.Delete(keys[1])
-	v, err = st.Get(keys[1])
-	if err == nil {
-		t.Errorf("key should be delete")
+func TestDelete(t *testing.T) {
+	tests := []struct {
+		input     map[int]int
+		deleteKey int
+		getKey    int
+		want      int
+	}{
+		{map[int]int{2: 2}, 2, 2, 0},
+		{map[int]int{1: 1, 2: 2}, 1, 2, 2},
+		{map[int]int{1: 1, 2: 2}, 1, 1, 0},
+	}
+	for i, tt := range tests {
+		s := New()
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+		s.Delete(tt.deleteKey)
+		got, _ := s.Get(tt.getKey)
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
+		}
 	}
 }
