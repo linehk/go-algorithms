@@ -83,6 +83,7 @@ func (h *heap) DelMax() (int, error) {
 	h.sink(1)
 	h.elements[max] = -1
 	// h.keys[max] = nil
+	h.keys[max] = 0
 	// h.index[h.len+1] = -1
 	return max, nil
 }
@@ -175,7 +176,8 @@ func (h *heap) Delete(i int) error {
 	h.swim(index)
 	h.sink(index)
 	// h.keys[i] = nil
-	// h.elements[i] = -1
+	h.keys[i] = 0
+	h.elements[i] = -1
 	return nil
 }
 
