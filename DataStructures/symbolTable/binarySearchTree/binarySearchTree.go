@@ -178,7 +178,6 @@ func (b bst) max(x *node) *node {
 }
 
 // Floor returns a value less or equal key but is the largest
-// left subtree largest
 func (b bst) Floor(key int) (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("symbol table is empty")
@@ -210,7 +209,6 @@ func (b bst) floor(x *node, key int) *node {
 }
 
 // Ceiling returns a value greater or equal key but is the smallest
-// right subtree smallest
 func (b bst) Ceiling(key int) (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("symbol table is empty")
@@ -298,13 +296,10 @@ func (b bst) height(x *node) int {
 	if x == nil {
 		return -1
 	}
-	return 1 + max(b.height(x.left), b.height(x.right))
-}
-
-func max(a, b int) int {
-	if a < b {
-		return b
-	} else {
-		return a
+	maxHeight := b.height(x.left)
+	rightHeight := b.height(x.right)
+	if maxHeight < rightHeight {
+		maxHeight = rightHeight
 	}
+	return 1 + maxHeight
 }
