@@ -211,3 +211,25 @@ func TestSizeByRange(t *testing.T) {
 		}
 	}
 }
+
+func TestHeight(t *testing.T) {
+	tests := []struct {
+		input map[int]int
+		want  int
+	}{
+		{map[int]int{}, -1},
+		{map[int]int{0: 0}, 0},
+		{map[int]int{0: 0, 1: 1}, 1},
+		{map[int]int{0: 0, 1: 1, 2: 2}, 2},
+	}
+	for i, tt := range tests {
+		s := New()
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+
+		if got := s.Height(); got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
+		}
+	}
+}
