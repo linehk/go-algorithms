@@ -228,15 +228,24 @@ func (b bst) ceiling(x *node, key int) *node {
 	if key == x.key {
 		return x
 	}
-	if key < x.key {
-		t := b.ceiling(x.left, key)
-		if t != nil {
-			return t
-		} else {
-			return x
-		}
+	if key > x.key {
+		return b.ceiling(x.right, key)
 	}
-	return b.ceiling(x.right, key)
+	t := b.ceiling(x.left, key)
+	if t != nil {
+		return t
+	} else {
+		return x
+	}
+	// if key < x.key {
+	// 	t := b.ceiling(x.left, key)
+	// 	if t != nil {
+	// 		return t
+	// 	} else {
+	// 		return x
+	// 	}
+	// }
+	// return b.ceiling(x.right, key)
 }
 
 func (b bst) Select(k int) (int, error) {
