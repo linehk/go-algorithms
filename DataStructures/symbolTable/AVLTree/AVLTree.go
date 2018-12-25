@@ -29,66 +29,46 @@ func newNode(key, value, size, height int) *node {
 }
 
 func New() *bst {
-	return new(bst)
+	b := new(bst)
+	b.root = nil
+	return b
 }
 
 func (b bst) IsEmpty() bool {
-	return b.root == nil
+	return b.Size() == 0
 }
 
 func (b bst) Size() int {
 	return b.size(b.root)
 }
 
-func (b bst) size(x *node) int {
-	if x == nil {
+func (b bst) size(n *node) int {
+	if n == nil {
 		return 0
 	} else {
-		return x.size
+		return n.size
 	}
 }
 
-// func (b bst) Get(key int) (int, error) {
-//         x, err := b.get(b.root, key)
-//         if err != nil {
-//                 return 0, err
-//         } else {
-//                 return x.value, nil
-//         }
-// }
-
-// func (b bst) get(x *node, key int) (*node, error) {
-//         if x == nil {
-//                 return nil, errors.New("key is not in the symbol table")
-//         }
-//
-//         if key < x.key {
-//                 return b.get(x.left, key)
-//         } else if key > x.key {
-//                 return b.get(x.right, key)
-//         } else {
-//                 return x, nil
-//         }
-// }
-
 func (b bst) Get(key int) (int, error) {
-	v, err := b.get(b.root, key)
+	n, err := b.get(b.root, key)
 	if err != nil {
 		return 0, err
 	}
-	return v, nil
+	return n.value, nil
 }
 
-func (b bst) get(x *node, key int) (int, error) {
-	if x == nil {
-		return 0, errors.New("key is not in the symbol table")
+func (b bst) get(n *node, key int) (*node, error) {
+	if n == nil {
+		return nil, errors.New("key is not exist")
 	}
-	if key < x.key {
-		return b.get(x.left, key)
-	} else if key > x.key {
-		return b.get(x.right, key)
+
+	if key < n.key {
+		return b.get(n.left, key)
+	} else if key > n.key {
+		return b.get(n.right, key)
 	} else {
-		return x.value, nil
+		return n, nil
 	}
 }
 
@@ -104,23 +84,24 @@ func (b *bst) Put(key int, value int) {
 	b.root = b.put(b.root, key, value)
 }
 
-func (b *bst) put(x *node, key int, value int) *node {
-	if x == nil {
+func (b *bst) put(n *node, key int, value int) *node {
+	if n == nil {
 		return newNode(key, value, 0, 1)
 	}
-	if key < x.key {
-		x.left = b.put(x.left, key, value)
-	} else if key > x.key {
-		x.right = b.put(x.right, key, value)
+
+	if key < n.key {
+		n.left = b.put(n.left, key, value)
+	} else if key > n.key {
+		n.right = b.put(n.right, key, value)
 	} else {
-		x.value = value
-		return x
+		n.value = value
+		return n
 	}
 
-	x.size = 1 + b.size(x.left) + b.size(x.right)
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
+	n.size = 1 + b.size(n.left) + b.size(n.right)
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
 
-	return b.balance(x)
+	return b.balance(n)
 }
 
 func (b *bst) DeleteMin() error {
@@ -131,16 +112,16 @@ func (b *bst) DeleteMin() error {
 	return nil
 }
 
-func (b *bst) deleteMin(x *node) *node {
-	if x.left == nil {
-		return x.right
+func (b *bst) deleteMin(n *node) *node {
+	if n.left == nil {
+		return n.right
 	}
-	x.left = b.deleteMin(x.left)
+	n.left = b.deleteMin(n.left)
 
-	x.size = 1 + b.size(x.left) + b.size(x.right)
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
+	n.size = 1 + b.size(n.left) + b.size(n.right)
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
 
-	return b.balance(x)
+	return b.balance(n)
 }
 
 func (b *bst) DeleteMax() error {
@@ -151,109 +132,108 @@ func (b *bst) DeleteMax() error {
 	return nil
 }
 
-func (b *bst) deleteMax(x *node) *node {
-	if x.right == nil {
-		return x.left
+func (b *bst) deleteMax(n *node) *node {
+	if n.right == nil {
+		return n.left
 	}
-	x.right = b.deleteMax(x.right)
+	n.right = b.deleteMax(n.right)
 
-	x.size = 1 + b.size(x.left) + b.size(x.right)
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
+	n.size = 1 + b.size(n.left) + b.size(n.right)
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
 
-	return b.balance(x)
+	return b.balance(n)
 }
 
 func (b *bst) Delete(key int) {
 	if !b.Contains(key) {
 		return
 	}
-
 	b.root = b.delete(b.root, key)
 }
 
-func (b *bst) delete(x *node, key int) *node {
-	if x == nil {
+func (b *bst) delete(n *node, key int) *node {
+	if n == nil {
 		return nil
 	}
 
-	if key < x.key {
-		x.left = b.delete(x.left, key)
-	} else if key > x.key {
-		x.right = b.delete(x.right, key)
+	if key < n.key {
+		n.left = b.delete(n.left, key)
+	} else if key > n.key {
+		n.right = b.delete(n.right, key)
 	} else {
-		if x.left == nil {
-			return x.right
-		} else if x.right == nil {
-			return x.left
+		if n.left == nil {
+			return n.right
+		} else if n.right == nil {
+			return n.left
 		} else {
-			y := x
-			x = b.min(y.right)
-			x.right = b.deleteMin(y.right)
-			x.left = y.left
+			t := n
+			n = b.min(t.right)
+			n.right = b.deleteMin(t.right)
+			n.left = t.left
 		}
 	}
 
-	x.size = 1 + b.size(x.left) + b.size(x.right)
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
+	n.size = 1 + b.size(n.left) + b.size(n.right)
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
 
-	return b.balance(x)
+	return b.balance(n)
 }
 
-func (b *bst) rotateRight(x *node) *node {
-	y := x.left
-	x.left = y.right
-	y.right = x
+func (b *bst) rotateRight(n *node) *node {
+	t := n.left
+	n.left = t.right
+	t.right = n
 
-	y.size = x.size
-	x.size = 1 + b.size(x.left) + b.size(x.right)
+	t.size = n.size
+	n.size = 1 + b.size(n.left) + b.size(n.right)
 
-	y.height = 1 + max(b.height(y.left), b.height(y.right))
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
+	t.height = 1 + max(b.height(t.left), b.height(t.right))
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
 
-	return y
+	return t
 }
 
-func (b *bst) rotateLeft(x *node) *node {
-	y := x.right
-	x.right = y.left
-	y.left = x
+func (b *bst) rotateLeft(n *node) *node {
+	t := n.right
+	n.right = t.left
+	t.left = n
 
-	y.size = x.size
-	x.size = 1 + b.size(x.left) + b.size(x.right)
+	t.size = n.size
+	n.size = 1 + b.size(n.left) + b.size(n.right)
 
-	y.height = 1 + max(b.height(y.left), b.height(y.right))
-	x.height = 1 + max(b.height(x.left), b.height(x.right))
-	return y
+	t.height = 1 + max(b.height(t.left), b.height(t.right))
+	n.height = 1 + max(b.height(n.left), b.height(n.right))
+	return t
 }
 
-func (b *bst) balance(x *node) *node {
-	if b.balanceFactor(x) < -1 {
-		if b.balanceFactor(x.right) > 0 {
-			x.right = b.rotateRight(x.right)
+func (b *bst) balance(n *node) *node {
+	if b.balanceFactor(n) < -1 {
+		if b.balanceFactor(n.right) > 0 {
+			n.right = b.rotateRight(n.right)
 		}
-		x = b.rotateLeft(x)
-	} else if b.balanceFactor(x) > 1 {
-		if b.balanceFactor(x.left) < 0 {
-			x.left = b.rotateLeft(x.left)
+		n = b.rotateLeft(n)
+	} else if b.balanceFactor(n) > 1 {
+		if b.balanceFactor(n.left) < 0 {
+			n.left = b.rotateLeft(n.left)
 		}
-		x = b.rotateRight(x)
+		n = b.rotateRight(n)
 	}
-	return x
+	return n
 }
 
-func (b *bst) balanceFactor(x *node) int {
-	return b.height(x.left) - b.height(x.right)
+func (b *bst) balanceFactor(n *node) int {
+	return b.height(n.left) - b.height(n.right)
 }
 
 func (b bst) Height() int {
 	return b.height(b.root)
 }
 
-func (b bst) height(x *node) int {
-	if x == nil {
+func (b bst) height(n *node) int {
+	if n == nil {
 		return -1
 	} else {
-		return x.height
+		return n.height
 	}
 }
 
@@ -264,11 +244,11 @@ func (b bst) Min() (int, error) {
 	return b.min(b.root).key, nil
 }
 
-func (b bst) min(x *node) *node {
-	if x.left == nil {
-		return x
+func (b bst) min(n *node) *node {
+	if n.left == nil {
+		return n
 	} else {
-		return b.min(x.left)
+		return b.min(n.left)
 	}
 }
 
@@ -279,11 +259,11 @@ func (b bst) Max() (int, error) {
 	return b.max(b.root).key, nil
 }
 
-func (b bst) max(x *node) *node {
-	if x.right == nil {
-		return x
+func (b bst) max(n *node) *node {
+	if n.right == nil {
+		return n
 	} else {
-		return b.max(x.right)
+		return b.max(n.right)
 	}
 }
 
@@ -291,29 +271,32 @@ func (b bst) Floor(key int) (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("symbol table is empty")
 	}
+
 	x := b.floor(b.root, key)
 	if x == nil {
-		return 0, errors.New("not need")
+		return 0, errors.New("no key is less than the argument")
 	} else {
 		return x.value, nil
 	}
 }
 
-func (b bst) floor(x *node, key int) *node {
-	if x == nil {
+func (b bst) floor(n *node, key int) *node {
+	if n == nil {
 		return nil
 	}
-	if key == x.key {
-		return x
+
+	if key == n.key {
+		return n
 	}
-	if key < x.key {
-		return b.floor(x.left, key)
+
+	if key < n.key {
+		return b.floor(n.left, key)
 	}
-	y := b.floor(x.right, key)
-	if y != nil {
-		return y
+	t := b.floor(n.right, key)
+	if t != nil {
+		return t
 	} else {
-		return x
+		return n
 	}
 }
 
@@ -321,50 +304,54 @@ func (b bst) Ceiling(key int) (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("symbol table is empty")
 	}
+
 	x := b.ceiling(b.root, key)
 	if x == nil {
-		return 0, errors.New("not need")
+		return 0, errors.New("no key is greater than the argument")
 	} else {
 		return x.key, nil
 	}
 }
 
-func (b bst) ceiling(x *node, key int) *node {
-	if x == nil {
+func (b bst) ceiling(n *node, key int) *node {
+	if n == nil {
 		return nil
 	}
-	if key == x.key {
-		return x
+
+	if key == n.key {
+		return n
 	}
-	if key > x.key {
-		return b.ceiling(x.right, key)
+
+	if key > n.key {
+		return b.ceiling(n.right, key)
 	}
-	y := b.ceiling(x.left, key)
+	y := b.ceiling(n.left, key)
 	if y != nil {
 		return y
 	} else {
-		return x
+		return n
 	}
 }
 
 func (b bst) Select(k int) (int, error) {
 	if k < 0 || k >= b.Size() {
-		return 0, errors.New("illegal index k")
+		return 0, errors.New("illegal index")
 	}
 	return b.selectNode(b.root, k).key, nil
 }
 
-func (b bst) selectNode(x *node, k int) *node {
-	if x == nil {
+func (b bst) selectNode(n *node, k int) *node {
+	if n == nil {
 		return nil
 	}
-	t := b.size(x.left)
+
+	t := b.size(n.left)
 	if t > k {
-		return b.selectNode(x.left, k)
+		return b.selectNode(n.left, k)
 	} else if t < k {
-		return b.selectNode(x.right, k-t-1)
+		return b.selectNode(n.right, k-t-1)
 	} else {
-		return x
+		return n
 	}
 }
 
@@ -372,16 +359,17 @@ func (b bst) Rank(key int) int {
 	return b.rank(b.root, key)
 }
 
-func (b bst) rank(x *node, key int) int {
-	if x == nil {
+func (b bst) rank(n *node, key int) int {
+	if n == nil {
 		return 0
 	}
-	if key < x.key {
-		return b.rank(x.left, key)
-	} else if key > x.key {
-		return 1 + b.size(x.left) + b.rank(x.right, key)
+
+	if key < n.key {
+		return b.rank(n.left, key)
+	} else if key > n.key {
+		return 1 + b.size(n.left) + b.rank(n.right, key)
 	} else {
-		return b.size(x.left)
+		return b.size(n.left)
 	}
 }
 
@@ -389,6 +377,7 @@ func (b bst) SizeByRange(lo, hi int) int {
 	if lo > hi {
 		return 0
 	}
+
 	if b.Contains(hi) {
 		return b.Rank(hi) - b.Rank(lo) + 1
 	} else {

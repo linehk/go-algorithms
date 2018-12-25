@@ -1,4 +1,4 @@
-package binarySearchST
+package binarySearch
 
 import (
 	"errors"
@@ -44,11 +44,13 @@ func (s st) Get(key int) (int, error) {
 	if s.len == 0 {
 		return 0, errors.New("symbol table is empty")
 	}
+
 	i := s.Rank(key)
 	if i < s.len && key == s.keys[i] {
 		return s.values[i], nil
 	}
-	return 0, errors.New("key is not in the st")
+
+	return 0, errors.New("key is not exist")
 }
 
 func (s st) Rank(key int) int {
@@ -75,13 +77,14 @@ func (s *st) Put(key int, value int) {
 	}
 
 	if s.len == s.cap {
-		s.resize(2 * s.cap)
+		s.resize(s.cap * 2)
 	}
 
 	for j := s.len; j > i; j-- {
 		s.keys[j] = s.keys[j-1]
 		s.values[j] = s.values[j-1]
 	}
+
 	s.keys[i] = key
 	s.values[i] = value
 	s.len++
@@ -91,6 +94,7 @@ func (s *st) Delete(key int) {
 	if s.len == 0 {
 		return
 	}
+
 	i := s.Rank(key)
 	if i == s.len || key != s.keys[i] {
 		return
@@ -101,9 +105,9 @@ func (s *st) Delete(key int) {
 		s.values[j] = s.keys[j+1]
 	}
 
-	s.len--
 	// s.keys[s.len] = 0
 	// s.values[s.len] = 0
+	s.len--
 
 	if s.len > 0 && s.len == s.cap/4 {
 		s.resize(s.cap / 2)
@@ -144,9 +148,8 @@ func (s st) Max() (int, error) {
 
 func (s st) Select(k int) (int, error) {
 	if k < 0 || k >= s.len {
-		return 0, errors.New("illegal index k")
+		return 0, errors.New("illegal index")
 	}
-
 	return s.keys[k], nil
 }
 
@@ -155,8 +158,9 @@ func (s st) Floor(key int) (int, error) {
 	if i < s.len && key == s.keys[i] {
 		return s.keys[i], nil
 	}
+
 	if i == 0 {
-		return 0, errors.New("key is not in the table")
+		return 0, errors.New("not key is less than argument")
 	} else {
 		return s.keys[i-1], nil
 	}
@@ -164,17 +168,19 @@ func (s st) Floor(key int) (int, error) {
 
 func (s st) Ceiling(key int) (int, error) {
 	i := s.Rank(key)
+
 	if i == s.len {
-		return 0, errors.New("key is not in the table")
+		return 0, errors.New("not key is greater than argument")
 	} else {
 		return s.keys[i], nil
 	}
 }
 
-func (s st) Size(lo, hi int) int {
+func (s st) SizeByRange(lo, hi int) int {
 	if lo > hi {
 		return 0
 	}
+
 	if s.Contains(hi) {
 		return s.Rank(hi) - s.Rank(lo) + 1
 	} else {

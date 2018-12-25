@@ -1,4 +1,4 @@
-package redBlackBST
+package binarySearch
 
 import (
 	"testing"
@@ -6,21 +6,22 @@ import (
 
 func TestContains(t *testing.T) {
 	tests := []struct {
-		input        map[int]int
-		key          int
-		wantContains bool
+		input map[int]int
+		key   int
+		want  bool
 	}{
 		{map[int]int{0: 0}, 0, true},
 		{map[int]int{0: 0}, 1, false},
 		{map[int]int{0: 0, 1: 1, 2: 2}, 2, true},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
-		if gotContains := s.Contains(tt.key); gotContains != tt.wantContains {
-			t.Errorf("%v. got %v, want %v", i, gotContains, tt.wantContains)
+
+		if got := s.Contains(tt.key); got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
 	}
 }
@@ -36,11 +37,13 @@ func TestGet(t *testing.T) {
 		{map[int]int{0: 0, 1: 1, 2: 2}, 3, 0},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		got, _ := s.Get(tt.key)
+
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
@@ -59,11 +62,13 @@ func TestPut(t *testing.T) {
 		{map[int]int{0: 0, 1: 1, 3: 3}, 2, 2, 2},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		s.Put(tt.key, tt.value)
+
 		got, err := s.Get(tt.key)
 		if err != nil {
 			t.Error(err)
@@ -84,14 +89,15 @@ func TestDelete(t *testing.T) {
 		{map[int]int{2: 2}, 2, 2, 0},
 		{map[int]int{1: 1, 2: 2}, 1, 2, 2},
 		{map[int]int{1: 1, 2: 2}, 1, 1, 0},
-		{map[int]int{1: 5, 2: 1, 3: 7, 4: 0, 5: 2, 6: 6, 7: 8}, 2, 7, 8},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		s.Delete(tt.deleteKey)
+
 		got, _ := s.Get(tt.getKey)
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
@@ -99,7 +105,7 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-func TestDeleteMinAndMax(t *testing.T) {
+func TestDeleteMinAndDeleteMax(t *testing.T) {
 	tests := []struct {
 		input   map[int]int
 		wantMin int
@@ -108,10 +114,11 @@ func TestDeleteMinAndMax(t *testing.T) {
 		{map[int]int{0: 0, 1: 1, 2: 2, 3: 3}, 1, 2},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		if err := s.DeleteMin(); err != nil {
 			t.Error(err)
 		}
@@ -136,6 +143,32 @@ func TestDeleteMinAndMax(t *testing.T) {
 	}
 }
 
+func TestSelect(t *testing.T) {
+	tests := []struct {
+		input map[int]int
+		k     int
+		want  int
+	}{
+		{map[int]int{1: 3, 3: 1, 2: 4, 4: 2}, 0, 1},
+		{map[int]int{1: 3, 3: 1, 2: 4, 4: 2}, 3, 4},
+	}
+	for i, tt := range tests {
+		s := New(len(tt.input))
+		for k, v := range tt.input {
+			s.Put(k, v)
+		}
+
+		got, err := s.Select(tt.k)
+
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
+		}
+	}
+}
+
 func TestFloorAndCeiling(t *testing.T) {
 	tests := []struct {
 		input       map[int]int
@@ -146,7 +179,7 @@ func TestFloorAndCeiling(t *testing.T) {
 		{map[int]int{0: 0, 1: 1, 3: 3, 4: 4}, 2, 1, 3},
 	}
 	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
@@ -169,66 +202,22 @@ func TestFloorAndCeiling(t *testing.T) {
 	}
 }
 
-func TestSelect(t *testing.T) {
-	tests := []struct {
-		input map[int]int
-		k     int
-		want  int
-	}{
-		{map[int]int{0: 0, 1: 1, 2: 2}, 1, 1},
-	}
-	for i, tt := range tests {
-		s := New()
-		for k, v := range tt.input {
-			s.Put(k, v)
-		}
-		got, err := s.Select(tt.k)
-		if err != nil {
-			t.Error(err)
-		}
-		if got != tt.want {
-			t.Errorf("%v. got %v, want %v", i, got, tt.want)
-		}
-	}
-}
-
 func TestSizeByRange(t *testing.T) {
 	tests := []struct {
-		input    map[int]int
-		lo       int
-		hi       int
-		wantSize int
+		input map[int]int
+		lo    int
+		hi    int
+		want  int
 	}{
 		{map[int]int{0: 0, 1: 1, 2: 2, 3: 3}, 0, 3, 4},
 	}
 	for i, tt := range tests {
-		s := New()
-		for k, v := range tt.input {
-			s.Put(k, v)
-		}
-		if gotSize := s.SizeByRange(tt.lo, tt.hi); gotSize != tt.wantSize {
-			t.Errorf("%v. got %v, want %v", i, gotSize, tt.wantSize)
-		}
-	}
-}
-
-func TestHeight(t *testing.T) {
-	tests := []struct {
-		input map[int]int
-		want  int
-	}{
-		{map[int]int{}, -1},
-		{map[int]int{0: 0}, 0},
-		{map[int]int{0: 0, 1: 1}, 1},
-		{map[int]int{0: 0, 1: 1, 2: 2}, 1},
-	}
-	for i, tt := range tests {
-		s := New()
+		s := New(len(tt.input))
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
 
-		if got := s.Height(); got != tt.want {
+		if got := s.SizeByRange(tt.lo, tt.hi); got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
 	}

@@ -1,4 +1,4 @@
-package sequentialSearchST
+package sequentialSearch
 
 import (
 	"testing"
@@ -6,9 +6,9 @@ import (
 
 func TestContains(t *testing.T) {
 	tests := []struct {
-		input        map[int]int
-		key          int
-		wantContains bool
+		input map[int]int
+		key   int
+		want  bool
 	}{
 		{map[int]int{0: 0}, 0, true},
 		{map[int]int{0: 0}, 1, false},
@@ -19,8 +19,9 @@ func TestContains(t *testing.T) {
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
-		if gotContains := s.Contains(tt.key); gotContains != tt.wantContains {
-			t.Errorf("%v. got %v, want %v", i, gotContains, tt.wantContains)
+
+		if got := s.Contains(tt.key); got != tt.want {
+			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
 	}
 }
@@ -40,7 +41,9 @@ func TestGet(t *testing.T) {
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		got, _ := s.Get(tt.key)
+
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}
@@ -61,7 +64,9 @@ func TestPut(t *testing.T) {
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		s.Put(tt.key, tt.value)
+
 		got, err := s.Get(tt.key)
 		if err != nil {
 			t.Error(err)
@@ -88,7 +93,9 @@ func TestDelete(t *testing.T) {
 		for k, v := range tt.input {
 			s.Put(k, v)
 		}
+
 		s.Delete(tt.deleteKey)
+
 		got, _ := s.Get(tt.getKey)
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)

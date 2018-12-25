@@ -1,4 +1,4 @@
-package sequentialSearchST
+package sequentialSearch
 
 import (
 	"errors"
@@ -17,6 +17,7 @@ type node struct {
 
 func New() *st {
 	s := new(st)
+	s.first = nil
 	s.len = 0
 	return s
 }
@@ -30,24 +31,30 @@ func (s st) Contains(key int) bool {
 }
 
 func (s st) Get(key int) (int, error) {
-	for x := s.first; x != nil; x = x.next {
-		if x.key == key {
-			return x.value, nil
+	if s.len == 0 {
+		return 0, errors.New("symbol table is empty")
+	}
+
+	for cur := s.first; cur != nil; cur = cur.next {
+		if cur.key == key {
+			return cur.value, nil
 		}
 	}
-	return 0, errors.New("key is not in the st")
+
+	return 0, errors.New("key is not exist")
 }
 
 func (s *st) Put(key, value int) {
-	x := s.first
+	cur := s.first
 	pre := s.first
-	for ; x != nil; x = x.next {
-		if x.key == key {
-			x.value = value
+	for ; cur != nil; cur = cur.next {
+		if cur.key == key {
+			cur.value = value
 			return
 		}
-		pre = x
+		pre = cur
 	}
+
 	newNode := &node{key, value, nil}
 	if s.first == nil {
 		s.first = newNode
@@ -61,14 +68,16 @@ func (s *st) Delete(key int) {
 	s.first = s.deleteNode(s.first, key)
 }
 
-func (s *st) deleteNode(x *node, key int) *node {
-	if x == nil {
+func (s *st) deleteNode(n *node, key int) *node {
+	if n == nil {
 		return nil
 	}
-	if x.key == key {
+
+	if n.key == key {
 		s.len--
-		return x.next
+		return n.next
 	}
-	x.next = s.deleteNode(x.next, key)
-	return x
+
+	n.next = s.deleteNode(n.next, key)
+	return n
 }
