@@ -4,10 +4,10 @@ type Key *string
 type Value *int
 
 type st struct {
-        len  int
-        cap  int
-        keys []Key
-        vals []Value
+        len    int
+        cap    int
+        keys   []Key
+        values []Value
 }
 
 func New(cap int) *st {
@@ -15,7 +15,7 @@ func New(cap int) *st {
         s.len = 0
         s.cap = cap
         s.keys = make([]Key, s.cap)
-        s.vals = make([]Value, s.cap)
+        s.values = make([]Value, s.cap)
         return s
 }
 
@@ -33,8 +33,8 @@ func (s st) Contains(key Key) bool {
 
 func (s st) Get(key Key) Value {
         for i := s.hash(key); s.keys[i] != nil; i = (i+1)%s.cap {
-                if key == s.keys[i] {
-                        return s.vals[i]
+                if *key == *s.keys[i] {
+                        return s.values[i]
                 }
         }
         return nil
@@ -58,11 +58,11 @@ func (s *st) resize(cap int) {
         temp := New(cap)
         for i := 0; i < s.cap; i++ {
                 if s.keys[i] != nil {
-                        temp.Put(s.keys[i], s.vals[i])
+                        temp.Put(s.keys[i], s.values[i])
                 }
         }
         s.keys = temp.keys
-        s.vals = temp.vals
+        s.values = temp.values
         s.cap = temp.cap
 }
 
@@ -72,19 +72,19 @@ func (s *st) Put(key Key, value Value)  {
                 return
         }
 
-        if s.len > s.cap/2 {
+        if s.len >= (s.cap/2) {
                 s.resize(s.cap*2)
         }
 
         i := s.hash(key)
         for ; s.keys[i] != nil; i = (i+1)%s.cap {
-                if key == s.keys[i] {
-                        s.vals[i] = value
+                if *key == *s.keys[i] {
+                        s.values[i] = value
                         return
                 }
         }
         s.keys[i] = key
-        s.vals[i] = value
+        s.values[i] = value
         s.len++
 }
 
@@ -94,19 +94,19 @@ func (s *st) Delete(key Key)  {
         }
 
         i := s.hash(key)
-        for key != s.keys[i] {
+        for *key != *s.keys[i] {
                 i = (i+1)%s.cap
         }
 
         s.keys[i] = nil
-        s.vals[i] = nil
+        s.values[i] = nil
 
         i = (i+1)%s.cap
         for s.keys[i] != nil {
                 newKey := s.keys[i]
-                newVal := s.vals[i]
+                newVal := s.values[i]
                 s.keys[i] = nil
-                s.vals[i] = nil
+                s.values[i] = nil
                 s.len--
                 s.Put(newKey, newVal)
                 i = (i+1)%s.cap
@@ -114,7 +114,7 @@ func (s *st) Delete(key Key)  {
 
         s.len--
 
-        if s.len > 0 && s.len <= s.cap/8 {
+        if (s.len > 0) && (s.len <= (s.cap/8)) {
                 s.resize(s.cap/2)
         }
 }
