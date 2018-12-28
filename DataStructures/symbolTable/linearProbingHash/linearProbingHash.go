@@ -1,120 +1,122 @@
 package linearProbingHash
 
-type Key *string
-type Value *int
+import (
+	"errors"
+)
 
 type st struct {
-        len    int
-        cap    int
-        keys   []Key
-        values []Value
+	keys   []string
+	values []int
+	len    int
+	cap    int
 }
 
+const NULL = ""
+
 func New(cap int) *st {
-        s := new(st)
-        s.len = 0
-        s.cap = cap
-        s.keys = make([]Key, s.cap)
-        s.values = make([]Value, s.cap)
-        return s
+	s := new(st)
+	s.keys = make([]string, cap)
+	s.values = make([]int, cap)
+	s.len = 0
+	s.cap = cap
+	return s
 }
 
 func (s st) Size() int {
-        return s.len
+	return s.len
 }
 
 func (s st) IsEmpty() bool {
-        return s.Size() == 0
+	return s.Size() == 0
 }
 
-func (s st) Contains(key Key) bool {
-        return s.Get(key) != nil
+func (s st) Contains(key string) bool {
+	_, err := s.Get(key)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
-func (s st) Get(key Key) Value {
-        for i := s.hash(key); s.keys[i] != nil; i = (i+1)%s.cap {
-                if *key == *s.keys[i] {
-                        return s.values[i]
-                }
-        }
-        return nil
+func (s st) Get(key string) (int, error) {
+	for i := s.hash(key); s.keys[i] != NULL; i = (i + 1) % s.cap {
+		if key == s.keys[i] {
+			return s.values[i], nil
+		}
+	}
+	return 0, errors.New("key is not exist")
 }
 
-func (s st) hash(key Key) int {
-        return (s.hashCode(key) & 0x7fffffff) %s.cap
+func (s st) hash(key string) int {
+	return (s.hashCode(key) & 0x7fffffff) % s.cap
 }
 
-func (s st) hashCode(key Key) int {
-        ks := *key
-        l := len(ks)
-        hash := 0
-        for i := 0; i < l; i++ {
-                hash = 31 * hash + int(ks[i])
-        }
-        return hash
+func (s st) hashCode(key string) int {
+	l := len(key)
+	hash := 0
+	for i := 0; i < l; i++ {
+		hash = 31*hash + int(key[i])
+	}
+	return hash
 }
 
 func (s *st) resize(cap int) {
-        temp := New(cap)
-        for i := 0; i < s.cap; i++ {
-                if s.keys[i] != nil {
-                        temp.Put(s.keys[i], s.values[i])
-                }
-        }
-        s.keys = temp.keys
-        s.values = temp.values
-        s.cap = temp.cap
+	newST := New(cap)
+	for i := 0; i < s.cap; i++ {
+		if s.keys[i] != NULL {
+			newST.Put(s.keys[i], s.values[i])
+		}
+	}
+	s.keys = newST.keys
+	s.values = newST.values
+	s.cap = newST.cap
 }
 
-func (s *st) Put(key Key, value Value)  {
-        if value == nil {
-                s.Delete(key)
-                return
-        }
+func (s *st) Put(key string, value int) {
+	if s.len >= (s.cap / 2) {
+		s.resize(s.cap * 2)
+	}
 
-        if s.len >= (s.cap/2) {
-                s.resize(s.cap*2)
-        }
+	i := s.hash(key)
+	for ; s.keys[i] != NULL; i = (i + 1) % s.cap {
+		if key == s.keys[i] {
+			s.values[i] = value
+			return
+		}
+	}
 
-        i := s.hash(key)
-        for ; s.keys[i] != nil; i = (i+1)%s.cap {
-                if *key == *s.keys[i] {
-                        s.values[i] = value
-                        return
-                }
-        }
-        s.keys[i] = key
-        s.values[i] = value
-        s.len++
+	s.keys[i] = key
+	s.values[i] = value
+	s.len++
 }
 
-func (s *st) Delete(key Key)  {
-        if !s.Contains(key) {
-                return
-        }
+func (s *st) Delete(key string) {
+	if !s.Contains(key) {
+		return
+	}
 
-        i := s.hash(key)
-        for *key != *s.keys[i] {
-                i = (i+1)%s.cap
-        }
+	i := s.hash(key)
+	for ; key != s.keys[i]; i = (i + 1) % s.cap {
+	}
 
-        s.keys[i] = nil
-        s.values[i] = nil
+	s.keys[i] = NULL
+	s.values[i] = 0
 
-        i = (i+1)%s.cap
-        for s.keys[i] != nil {
-                newKey := s.keys[i]
-                newVal := s.values[i]
-                s.keys[i] = nil
-                s.values[i] = nil
-                s.len--
-                s.Put(newKey, newVal)
-                i = (i+1)%s.cap
-        }
+	i = (i + 1) % s.cap
+	for ; s.keys[i] != NULL; i = (i + 1) % s.cap {
+		newKey := s.keys[i]
+		newVal := s.values[i]
 
-        s.len--
+		s.keys[i] = NULL
+		s.values[i] = 0
 
-        if (s.len > 0) && (s.len <= (s.cap/8)) {
-                s.resize(s.cap/2)
-        }
+		s.len--
+		s.Put(newKey, newVal)
+	}
+
+	s.len--
+
+	if (s.len > 0) && (s.len <= (s.cap / 8)) {
+		s.resize(s.cap / 2)
+	}
 }
