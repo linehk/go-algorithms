@@ -1,7 +1,8 @@
 package depthFirstSearch
 
 import (
-	"github.com/linehk/GoAlgorithms/DataStructures/graph"
+	"errors"
+	"github.com/linehk/GoAlgorithms/DataStructures/graph/adjacencyMatrix"
 )
 
 type dfs struct {
@@ -9,25 +10,51 @@ type dfs struct {
 	count  int
 }
 
-func (d *dfs) DepthFirstSearch(g graph.Graph, s int) {
+func DepthFirstSearch(g adjacencyMatrix.Graph, s int) error {
+	d := new(dfs)
 	d.marked = make([]bool, g.V())
-	d.dfs(g, s)
+	d.count = 0
+	if err := d.dfs(g, s); err != nil {
+		return err
+	}
+	return nil
 }
 
-func (d *dfs) dfs(g graph.Graph, v int) {
+func (d *dfs) dfs(g adjacencyMatrix.Graph, v int) error {
 	d.count++
 	d.marked[v] = true
-	for _, w := range g.Adj(v) {
+	adj, err := g.Adj(v)
+	if err != nil {
+		return err
+	}
+	for _, w := range adj {
 		if !d.marked[w] {
-			d.dfs(g, w)
+			if err := d.dfs(g, w); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
-func (d dfs) Marked(v int) bool {
-	return d.marked[v]
+func (d dfs) Marked(v int) (bool, error) {
+	if err := d.validateVertex(v); err != nil {
+		return false, err
+	}
+	return d.marked[v], nil
 }
 
 func (d dfs) Count() int {
 	return d.count
+}
+
+func (d dfs) validateVertex(v int) error {
+	V := len(d.marked)
+	if v < 0 || v >= V {
+		return errors.New("illegal vertex")
+	}
+	return nil
+}
+
+func NonrecursiveDFS(g adjacencyMatrix.Graph, s int) {
 }
