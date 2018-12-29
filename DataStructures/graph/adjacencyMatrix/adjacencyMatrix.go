@@ -1,4 +1,4 @@
-package graph
+package adjacencyMatrix
 
 import (
 	"errors"
