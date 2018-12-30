@@ -1,142 +1,114 @@
 package adjacencyMatrix
 
-import (
-	"errors"
-)
-
-type Graph struct {
+type UndirectedGraph struct {
 	v   int
 	e   int
 	adj [][]int
 }
 
-func New(v int) *Graph {
-	g := new(Graph)
+func NewGraph(v int) *UndirectedGraph {
+	g := new(UndirectedGraph)
 	g.v = v
 	g.e = 0
 	g.adj = make([][]int, g.v)
+	for i := range g.adj {
+		g.adj[i] = make([]int, g.v)
+	}
 	return g
 }
 
-func (g Graph) V() int {
-	return g.v
+type Edge struct {
+	v int
+	w int
 }
 
-func (g Graph) E() int {
-	return g.e
+// assume vertex >= 0 and < graph vertex
+func NewEdge(v, w int) *Edge {
+	e := new(Edge)
+	e.v = v
+	e.w = w
+	return e
 }
 
-func (g Graph) validateVertex(v int) error {
-	if v < 0 || v >= g.v {
-		return errors.New("illegal v")
+func (u UndirectedGraph) V() int {
+	return u.v
+}
+
+func (u UndirectedGraph) E() int {
+	return u.e
+}
+
+func (u *UndirectedGraph) AddEdge(e Edge) {
+	u.adj[e.v][e.w] = 1
+	u.adj[e.w][e.v] = 1
+	u.e++
+}
+
+func (u UndirectedGraph) Degree(v int) int {
+	degree := 0
+	for _, isConnected := range u.adj[v] {
+		if isConnected == 1 {
+			degree++
+		}
 	}
+	return degree
+}
+
+func (u UndirectedGraph) Adj(v int) []int {
 	return nil
 }
 
-func (g *Graph) AddEdge(v, w int) error {
-	if err := g.validateVertex(v); err != nil {
-		return err
-	}
-	if err := g.validateVertex(w); err != nil {
-		return err
-	}
-
-	g.e++
-	g.adj[v][w] = 1
-	g.adj[w][v] = 1
-
-	return nil
-}
-
-func (g Graph) Degree(v int) (int, error) {
-	if err := g.validateVertex(v); err != nil {
-		return 0, err
-	}
-	return len(g.adj[v]), nil
-}
-
-func (g Graph) Adj(v int) ([]int, error) {
-	if err := g.validateVertex(v); err != nil {
-		return nil, err
-	}
-	return g.adj[v], nil
-}
-
-type Digraph struct {
+type DirectedGraph struct {
 	v        int
 	e        int
 	adj      [][]int
 	inDegree []int
 }
 
-func NewDigraph(v int) *Digraph {
-	d := new(Digraph)
+func NewDigraph(v int) *DirectedGraph {
+	d := new(DirectedGraph)
 	d.v = v
 	d.e = 0
+	d.adj = make([][]int, d.v)
+	for i := range d.adj {
+		d.adj[i] = make([]int, d.v)
+	}
 	d.inDegree = make([]int, d.v)
-	d.adj = make([][]int, d.e)
 	return d
 }
 
-func (d Digraph) V() int {
+func (d DirectedGraph) V() int {
 	return d.v
 }
 
-func (d Digraph) E() int {
+func (d DirectedGraph) E() int {
 	return d.e
 }
 
-func (d *Digraph) AddEdge(v, w int) error {
-	if err := d.validateVertex(v); err != nil {
-		return err
-	}
-	if err := d.validateVertex(w); err != nil {
-		return err
-	}
-
-	d.adj[v][w] = 1
-	d.inDegree[w]++
+func (d *DirectedGraph) AddEdge(e Edge) {
+	d.adj[e.v][e.w] = 1
+	d.inDegree[e.w]++
 	d.e++
+}
 
+func (d DirectedGraph) Adj(v int) []int {
 	return nil
 }
 
-func (d Digraph) validateVertex(v int) error {
-	if v < 0 || v >= d.v {
-		return errors.New("illegal vertex")
-	}
-	return nil
-}
-
-func (d Digraph) Adj(v int) ([]int, error) {
-	if err := d.validateVertex(v); err != nil {
-		return nil, err
-	}
-	return d.adj[v], nil
-}
-
-func (d Digraph) OutDegree(v int) (int, error) {
-	if err := d.validateVertex(v); err != nil {
-		return 0, err
-	}
-	return len(d.adj[v]), nil
-}
-
-func (d Digraph) InDegree(v int) (int, error) {
-	if err := d.validateVertex(v); err != nil {
-		return 0, err
-	}
-	return d.inDegree[v], nil
-}
-
-func (d Digraph) Reverse() (*Digraph, error) {
-	reverse := NewDigraph(d.v)
-	for v := 0; v < d.v; v++ {
-		for _, w := range d.adj[v] {
-			if err := reverse.AddEdge(w, v); err != nil {
-				return nil, err
-			}
+func (d DirectedGraph) OutDegree(v int) int {
+	outDegree := 0
+	for _, isConnected := range d.adj[v] {
+		if isConnected == 1 {
+			outDegree++
 		}
 	}
-	return reverse, nil
+	return outDegree
+}
+
+func (d DirectedGraph) InDegree(v int) int {
+	return d.inDegree[v]
+}
+
+func (d DirectedGraph) Reverse() *DirectedGraph {
+	return nil
 }
