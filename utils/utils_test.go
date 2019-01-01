@@ -14,9 +14,7 @@ func TestSwap(t *testing.T) {
 		{[]interface{}{1, 'a', "aa"}, 0, 2, []interface{}{"aa", 'a', 1}},
 	}
 	for i, tt := range tests {
-		if err := Swap(tt.give, tt.i, tt.j); err != nil {
-			t.Error(err)
-		}
+		Swap(tt.give, tt.i, tt.j)
 
 		if !IsSameSlice(tt.give, tt.want) {
 			t.Errorf("%v. got %v, want %v", i, tt.give, tt.want)
@@ -31,6 +29,10 @@ func TestIsSameSlice(t *testing.T) {
 		want bool
 	}{
 		{[]interface{}{1, 2, 3}, []interface{}{1, 2, 3}, true},
+		{[]interface{}{1}, []interface{}{1, 2}, false},
+		{nil, nil, true},
+		{[]interface{}{1}, nil, false},
+		{[]interface{}{1, 2, 4}, []interface{}{1, 2, 3}, false},
 	}
 	for i, tt := range tests {
 		if got := IsSameSlice(tt.s1, tt.s2); got != tt.want {
@@ -80,6 +82,7 @@ func TestCopySlice(t *testing.T) {
 		want []interface{}
 	}{
 		{[]interface{}{1, 2, 3}, []interface{}{1, 2, 3}},
+		{nil, nil},
 	}
 	for i, tt := range tests {
 		got := CopySlice(tt.give)
@@ -96,6 +99,7 @@ func TestFindMax(t *testing.T) {
 		want int
 	}{
 		{[]int{1, 2, 3, 4, 5}, 5},
+		{[]int{5, 4, 3, 2, 1, 0}, 5},
 	}
 	for i, tt := range tests {
 		if got := FindMax(tt.give); got != tt.want {
@@ -111,6 +115,7 @@ func TestGCD(t *testing.T) {
 		want int
 	}{
 		{4, 8, 4},
+		{-1, -1, 0},
 	}
 	for i, tt := range tests {
 		if got := GCD(tt.p, tt.q); got != tt.want {
@@ -125,6 +130,7 @@ func TestReverse(t *testing.T) {
 		want []interface{}
 	}{
 		{[]interface{}{1, 2, 3}, []interface{}{3, 2, 1}},
+		{nil, nil},
 	}
 	for i, tt := range tests {
 		Reverse(tt.give)
@@ -140,6 +146,8 @@ func TestIsPrime(t *testing.T) {
 		want bool
 	}{
 		{5, true},
+		{1, false},
+		{4, false},
 	}
 	for i, tt := range tests {
 		if got := IsPrime(tt.give); got != tt.want {
@@ -156,10 +164,7 @@ func TestSqrt(t *testing.T) {
 		{4.0, 2.0},
 	}
 	for i, tt := range tests {
-		got, err := Sqrt(tt.give)
-		if err != nil {
-			t.Error(err)
-		}
+		got := Sqrt(tt.give)
 
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
@@ -176,10 +181,7 @@ func TestHypotenuse(t *testing.T) {
 		{3.0, 4.0, 5.0},
 	}
 	for i, tt := range tests {
-		got, err := Hypotenuse(tt.a, tt.b)
-		if err != nil {
-			t.Error(err)
-		}
+		got := Hypotenuse(tt.a, tt.b)
 		if got != tt.want {
 			t.Errorf("%v. got %v, want %v", i, got, tt.want)
 		}

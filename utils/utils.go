@@ -1,30 +1,23 @@
 package utils
 
 import (
-	"errors"
 	"math"
 )
 
 // Swap exchanges s[i] and s[j].
-func Swap(s []interface{}, i, j int) error {
-	if s == nil {
-		return errors.New("slice can't be nil")
-	}
-	if (i < 0 || i >= len(s)) || (j < 0 || j >= len(s)) {
-		return errors.New("illegal index")
-	}
-
+// 交换切片中的两个元素。
+// Assume:
+// s != nil
+// i >= 0 && i < len(s)
+// j >= 0 && j < len(s)
+func Swap(s []interface{}, i, j int) {
 	s[i], s[j] = s[j], s[i]
-
-	return nil
 }
 
 // IsSameSlice determines two slice is it the same.
+// 判断两个切片是否相同。
 func IsSameSlice(a, b []interface{}) bool {
 	if len(a) != len(b) {
-		return false
-	}
-	if (a == nil) != (b == nil) {
 		return false
 	}
 
@@ -38,6 +31,7 @@ func IsSameSlice(a, b []interface{}) bool {
 }
 
 // MatrixMultiply returns two matrix product.
+// 两个 2x2 整数矩阵相乘，返回一个新矩阵。
 func MatrixMultiply(a, b [][]int) [][]int {
 	c := [][]int{
 		{0, 0},
@@ -54,6 +48,7 @@ func MatrixMultiply(a, b [][]int) [][]int {
 }
 
 // Average returns s average number.
+// 求整数切片的平均值。
 func Average(s []int) int {
 	var sum int
 	for _, v := range s {
@@ -63,6 +58,7 @@ func Average(s []int) int {
 }
 
 // CopySlice returns a new slice copy of s.
+// 复制一个新切片返回。
 func CopySlice(s []interface{}) []interface{} {
 	if s == nil {
 		return nil
@@ -76,10 +72,10 @@ func CopySlice(s []interface{}) []interface{} {
 }
 
 // FindMax returns max number from s.
+// 返回整数切片的最大值。
 func FindMax(s []int) int {
-	var max int
+	max := s[0]
 	for _, v := range s {
-		max = v
 		if v > max {
 			max = v
 		}
@@ -88,6 +84,7 @@ func FindMax(s []int) int {
 }
 
 // GCD returns greatest common divisor with p and q.
+// 返回 p q 的最大公因数。
 func GCD(p, q int) int {
 	if p < 0 && q < 0 {
 		return 0
@@ -102,6 +99,7 @@ func GCD(p, q int) int {
 }
 
 // Reverse reverses s.
+// 原地反转切片。
 func Reverse(s []interface{}) {
 	if s == nil {
 		return
@@ -114,6 +112,7 @@ func Reverse(s []interface{}) {
 }
 
 // IsPrime determines n is it the prime.
+// 判读是否是素数。
 func IsPrime(n int) bool {
 	if n < 2 {
 		return false
@@ -129,29 +128,26 @@ func IsPrime(n int) bool {
 }
 
 // Sqrt extracts a root by Newton's method.
-func Sqrt(c float64) (float64, error) {
-	if c < 0 {
-		return 0, errors.New("argument can't be negative")
-	}
-
+// 用牛顿迭代法求开方。
+// Assume:
+// c >= 0
+func Sqrt(c float64) float64 {
 	err := 1e-15
 	t := c
 	for math.Abs(t-c/t) > err*t {
 		t = (c/t + t) / 2.0
 	}
-	return t, nil
+	return t
 }
 
 // Hypotenuse calculate the hypotenuse of a triangle.
-func Hypotenuse(a, b float64) (float64, error) {
-	v, err := Sqrt(a*a + b*b)
-	if err != nil {
-		return 0, errors.New("argument can't negative")
-	}
-	return v, nil
+// 求三角形斜边的值。
+func Hypotenuse(a, b float64) float64 {
+	return Sqrt(a*a + b*b)
 }
 
 // Harmonic calculate the Harmonic number.
+// 计算调和级数。
 func Harmonic(n int) float64 {
 	sum := 0.0
 	for i := 1; i <= n; i++ {
