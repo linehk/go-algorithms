@@ -128,6 +128,7 @@ func (d DirectedGraph) Reverse() *DirectedGraph {
 	for v := 0; v < d.v; v++ {
 		for _, edge := range d.adj[v] {
 			if edge.weight != 0 {
+				// 也可以直接交换 adj 中的值
 				reverseGraph.AddEdge(Edge{edge.w, edge.v, edge.weight})
 			}
 		}
