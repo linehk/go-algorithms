@@ -1,10 +1,6 @@
 // Package array implements DataStructure array can dynamically grow and shark.
 package array
 
-import (
-	"errors"
-)
-
 type array struct {
 	len      int
 	cap      int
@@ -21,22 +17,17 @@ func New(cap int) *array {
 }
 
 // Get returns the value at i.
-func (a array) Get(i int) (interface{}, error) {
-	if i < 0 || i > a.len-1 {
-		return nil, errors.New("illegal index")
-	}
-
-	return a.elements[i], nil
+// Assume:
+// 0 <= i < a.len
+func (a array) Get(i int) interface{} {
+	return a.elements[i]
 }
 
 // Set assign v to array index i.
-func (a *array) Set(i int, v interface{}) error {
-	if i < 0 || i > a.len-1 {
-		return errors.New("illegal index")
-	}
-
+// Assume:
+// 0 <= i < a.len
+func (a *array) Set(i int, v interface{}) {
 	a.elements[i] = v
-	return nil
 }
 
 // Len returns array available element counts.
@@ -61,11 +52,9 @@ func (a *array) Append(v interface{}) {
 
 // Insert inserts v before i.
 // Can't inserts to a empty array.
-func (a *array) Insert(i int, v interface{}) error {
-	if i < 0 || i > a.len-1 {
-		return errors.New("illegal index")
-	}
-
+// Assume:
+// 0 <= i < a.len
+func (a *array) Insert(i int, v interface{}) {
 	if a.len+1 > a.cap {
 		a.resize(a.cap * 2)
 	}
@@ -76,15 +65,12 @@ func (a *array) Insert(i int, v interface{}) error {
 
 	a.elements[i] = v
 	a.len++
-	return nil
 }
 
 // Delete deletes the element at i.
-func (a *array) Delete(i int) error {
-	if i < 0 || i >= a.len {
-		return errors.New("illegal index")
-	}
-
+// Assume:
+// 0 <= i <= a.len
+func (a *array) Delete(i int) {
 	if a.len-1 < a.cap/4 {
 		a.resize(a.cap / 2)
 	}
@@ -95,7 +81,6 @@ func (a *array) Delete(i int) error {
 
 	a.elements[a.len-1] = nil
 	a.len--
-	return nil
 }
 
 func (a *array) resize(cap int) {

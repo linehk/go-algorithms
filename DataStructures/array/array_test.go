@@ -3,7 +3,7 @@ package array
 import (
 	"testing"
 
-	"GoAlgorithms/utils"
+	"github.com/linehk/GoAlgorithms/utils"
 )
 
 func TestGet(t *testing.T) {
@@ -19,12 +19,7 @@ func TestGet(t *testing.T) {
 		}
 
 		for k, v := range tt.values {
-			got, err := a.Get(k)
-			if err != nil {
-				t.Error(err)
-			}
-
-			if got != v {
+			if got := a.Get(k); got != v {
 				t.Errorf("%v. got %v, want %v", i, got, v)
 			}
 		}
@@ -46,16 +41,9 @@ func TestSet(t *testing.T) {
 			a.Append(v)
 		}
 
-		if err := a.Set(tt.index, tt.setValue); err != nil {
-			t.Error(err)
-		}
+		a.Set(tt.index, tt.setValue)
 
-		got, err := a.Get(tt.index)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if got != tt.setValue {
+		if got := a.Get(tt.index); got != tt.setValue {
 			t.Errorf("%v. got %v, want %v", i, got, tt.setValue)
 		}
 	}
@@ -101,9 +89,7 @@ func TestInsert(t *testing.T) {
 			a.Append(v)
 		}
 
-		if err := a.Insert(tt.i, tt.v); err != nil {
-			t.Error(err)
-		}
+		a.Insert(tt.i, tt.v)
 
 		if !utils.IsSameSlice(a.elements, tt.want) {
 			t.Errorf("%v. got %v, want %v", i, a.elements,
@@ -132,9 +118,7 @@ func TestDelete(t *testing.T) {
 			}
 		}
 
-		if err := a.Delete(tt.i); err != nil {
-			t.Error(err)
-		}
+		a.Delete(tt.i)
 
 		if !utils.IsSameSlice(a.elements, tt.want) {
 			t.Errorf("%v. got %v, want %v", i, a.elements,
