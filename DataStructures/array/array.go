@@ -1,47 +1,57 @@
-// Package array implements DataStructure array can dynamically grow and shark.
+// Package Array implements DataStructure Array can dynamically grow and shark.
 package array
 
-type array struct {
+import (
+	"fmt"
+)
+
+type Array struct {
 	len      int
 	cap      int
 	elements []interface{}
 }
 
-// New creates a array with cap.
-func New(cap int) *array {
-	a := new(array)
+func New(cap int) *Array {
+	return new(Array).Init(cap)
+}
+
+func (a *Array) Init(cap int) *Array {
 	a.len = 0
 	a.cap = cap
-	a.elements = make([]interface{}, a.cap)
+	a.elements = make([]interface{}, cap)
 	return a
 }
 
 // Get returns the value at i.
-// Assume:
-// 0 <= i < a.len
-func (a array) Get(i int) interface{} {
+func (a *Array) Get(i int) interface{} {
+	if i < 0 || i >= a.len {
+		panic(fmt.Sprintf("illegal index %d", i))
+	}
+
 	return a.elements[i]
 }
 
-// Set assign v to array index i.
-// Assume:
-// 0 <= i < a.len
-func (a *array) Set(i int, v interface{}) {
+// Set assign v to Array index i.
+func (a *Array) Set(i int, v interface{}) {
+	if i < 0 || i >= a.len {
+		panic(fmt.Sprintf("illegal index %d", i))
+	}
+
 	a.elements[i] = v
 }
 
-// Len returns array available element counts.
-func (a array) Len() int {
+// Len returns Array available element counts.
+func (a *Array) Len() int {
 	return a.len
 }
 
-// Cap returns array capacity.
-func (a array) Cap() int {
+// Cap returns Array capacity.
+func (a *Array) Cap() int {
 	return a.cap
 }
 
-// Append inserts v at array last.
-func (a *array) Append(v interface{}) {
+// Append inserts v at Array last.
+func (a *Array) Append(v interface{}) {
 	if a.len+1 > a.cap {
 		a.resize(a.cap * 2)
 	}
@@ -51,10 +61,12 @@ func (a *array) Append(v interface{}) {
 }
 
 // Insert inserts v before i.
-// Can't inserts to a empty array.
-// Assume:
-// 0 <= i < a.len
-func (a *array) Insert(i int, v interface{}) {
+// Can't inserts to a empty Array.
+func (a *Array) Insert(i int, v interface{}) {
+	if i < 0 || i >= a.len {
+		panic(fmt.Sprintf("illegal index %d", i))
+	}
+
 	if a.len+1 > a.cap {
 		a.resize(a.cap * 2)
 	}
@@ -68,9 +80,11 @@ func (a *array) Insert(i int, v interface{}) {
 }
 
 // Delete deletes the element at i.
-// Assume:
-// 0 <= i <= a.len
-func (a *array) Delete(i int) {
+func (a *Array) Delete(i int) {
+	if i < 0 || i >= a.len {
+		panic(fmt.Sprintf("illegal index %d", i))
+	}
+
 	if a.len-1 < a.cap/4 {
 		a.resize(a.cap / 2)
 	}
@@ -83,7 +97,7 @@ func (a *array) Delete(i int) {
 	a.len--
 }
 
-func (a *array) resize(cap int) {
+func (a *Array) resize(cap int) {
 	a.cap = cap
 	newElements := make([]interface{}, a.cap)
 	for i := 0; i < a.len; i++ {
