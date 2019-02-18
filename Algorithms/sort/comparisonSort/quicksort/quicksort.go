@@ -1,9 +1,5 @@
 package quicksort
 
-import (
-	"github.com/linehk/GoAlgorithms/Algorithms/sort/utils"
-)
-
 var cutoff = 20
 
 func QuickSort(elements []int) {
@@ -35,10 +31,10 @@ func partition(elements []int, lo, hi int) int {
 			i++
 		}
 		if i < j {
-			utils.Swap(elements, i, j)
+			elements[i], elements[j] = elements[j], elements[i]
 		}
 	}
-	utils.Swap(elements, i, pivotIndex)
+	elements[i], elements[pivotIndex] = elements[pivotIndex], elements[i]
 	return i
 }
 

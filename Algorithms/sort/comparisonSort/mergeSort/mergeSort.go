@@ -10,9 +10,7 @@ func sort(elements, aux []int, lo, hi int) {
 	if lo >= hi {
 		return
 	}
-	// mid := int(uint(lo+hi) >> 1)
-	// mid is left part last element index
-	mid := lo + (hi-lo)/2
+	mid := lo + (hi-lo)>>1
 	sort(elements, aux, lo, mid)
 	sort(elements, aux, mid+1, hi)
 	merge(elements, aux, lo, mid, hi)

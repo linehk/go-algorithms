@@ -1,16 +1,16 @@
 package insertionSort
 
-import (
-	"github.com/linehk/GoAlgorithms/Algorithms/sort/utils"
-)
-
 func InsertionSort(elements []int) {
 	for i := 1; i < len(elements); i++ {
-		for j := i; j > 0; j-- {
+		tmp := elements[i]
+		j := i
+		for ; j > 0; j-- {
 			if elements[j] < elements[j-1] {
-				utils.Swap(elements, j, j-1)
+				elements[j] = elements[j-1]
 			}
+
 		}
+		elements[j] = tmp
 	}
 }
 
