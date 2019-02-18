@@ -1,5 +1,9 @@
 package quicksort
 
+import (
+	"github.com/linehk/GoAlgorithms/Algorithms/sort/utils"
+)
+
 var cutoff = 20
 
 func QuickSort(elements []int) {
@@ -20,6 +24,24 @@ func sort(elements []int, lo, hi int) {
 	sort(elements, p+1, hi)
 }
 
+func partition(elements []int, lo, hi int) int {
+	i, j := lo, hi
+	pivotIndex, pivot := getPivot(elements, lo, hi)
+	for i < j {
+		for i < j && elements[j] > pivot {
+			j--
+		}
+		for i < j && elements[i] <= pivot {
+			i++
+		}
+		if i < j {
+			utils.Swap(elements, i, j)
+		}
+	}
+	utils.Swap(elements, i, pivotIndex)
+	return i
+}
+
 func insertionSort(elements []int, lo, hi int) {
 	for i := lo + 1; i < hi; i++ {
 		for j := i; j > lo; j-- {
@@ -28,48 +50,6 @@ func insertionSort(elements []int, lo, hi int) {
 			}
 		}
 	}
-}
-
-func partition(elements []int, lo, hi int) int {
-	i := lo
-	j := hi + 1
-
-	// pivotIndex, pivot := getPivotMid(elements, lo, hi)
-	// pivotIndex, pivot := getPivotMedian(elements, lo, hi)
-	pivotIndex, pivot := getPivot(elements, lo, hi)
-	elements[lo], elements[pivotIndex] = elements[pivotIndex], elements[lo]
-	pivotIndex = lo
-
-	for {
-		for {
-			i++
-			if elements[i] < pivot {
-				if i == hi {
-					break
-				}
-			} else {
-				break
-			}
-		}
-
-		for {
-			j--
-			if elements[j] > pivot {
-				if j == lo {
-					break
-				}
-			} else {
-				break
-			}
-		}
-
-		if i >= j {
-			break
-		}
-		elements[i], elements[j] = elements[j], elements[i]
-	}
-	elements[pivotIndex], elements[j] = elements[j], elements[pivotIndex]
-	return j
 }
 
 func getPivot(elements []int, lo, hi int) (int, int) {

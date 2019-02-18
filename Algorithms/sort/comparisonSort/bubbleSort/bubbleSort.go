@@ -1,12 +1,15 @@
 package bubbleSort
 
+import (
+	"github.com/linehk/GoAlgorithms/Algorithms/sort/utils"
+)
+
 func BubbleSort(elements []int) {
-	l := len(elements)
-	for i := 0; i < l-1; i++ {
+	for i := 0; i < len(elements)-1; i++ {
 		changed := false
-		for j := 0; j < l-1-i; j++ {
+		for j := 0; j < len(elements)-1-i; j++ {
 			if elements[j] > elements[j+1] {
-				elements[j], elements[j+1] = elements[j+1], elements[j]
+				utils.Swap(elements, j, j+1)
 				changed = true
 			}
 		}

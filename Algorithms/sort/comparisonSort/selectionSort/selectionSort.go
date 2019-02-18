@@ -1,14 +1,17 @@
 package selectionSort
 
+import (
+	"github.com/linehk/GoAlgorithms/Algorithms/sort/utils"
+)
+
 func SelectionSort(elements []int) {
-	l := len(elements)
-	for i := 0; i < l; i++ {
+	for i := 0; i < len(elements); i++ {
 		minIndex := i
-		for j := i + 1; j < l; j++ {
+		for j := i + 1; j < len(elements); j++ {
 			if elements[j] < elements[minIndex] {
 				minIndex = j
 			}
 		}
-		elements[i], elements[minIndex] = elements[minIndex], elements[i]
+		utils.Swap(elements, i, minIndex)
 	}
 }
