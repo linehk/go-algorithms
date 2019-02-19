@@ -1,24 +1,24 @@
 package mergeSort
 
-func MergeSort(elements []int) {
-	l := len(elements)
+func MergeSort(nums []int) {
+	l := len(nums)
 	aux := make([]int, l)
-	sort(elements, aux, 0, l-1)
+	sort(nums, aux, 0, l-1)
 }
 
-func sort(elements, aux []int, lo, hi int) {
-	if lo >= hi {
+func sort(nums, aux []int, lo, hi int) {
+	if hi <= lo {
 		return
 	}
 	mid := lo + (hi-lo)>>1
-	sort(elements, aux, lo, mid)
-	sort(elements, aux, mid+1, hi)
-	merge(elements, aux, lo, mid, hi)
+	sort(nums, aux, lo, mid)
+	sort(nums, aux, mid+1, hi)
+	merge(nums, aux, lo, mid, hi)
 }
 
-func merge(elements, aux []int, lo, mid, hi int) {
+func merge(nums, aux []int, lo, mid, hi int) {
 	for k := lo; k <= hi; k++ {
-		aux[k] = elements[k]
+		aux[k] = nums[k]
 	}
 
 	i := lo
@@ -26,16 +26,16 @@ func merge(elements, aux []int, lo, mid, hi int) {
 
 	for k := lo; k <= hi; k++ {
 		if i > mid {
-			elements[k] = aux[j]
+			nums[k] = aux[j]
 			j++
 		} else if j > hi {
-			elements[k] = aux[i]
+			nums[k] = aux[i]
 			i++
-		} else if aux[i] < aux[j] {
-			elements[k] = aux[i]
+		} else if aux[i] <= aux[j] {
+			nums[k] = aux[i] // 先进行这一步，保证稳定性
 			i++
 		} else {
-			elements[k] = aux[j]
+			nums[k] = aux[j]
 			j++
 		}
 	}

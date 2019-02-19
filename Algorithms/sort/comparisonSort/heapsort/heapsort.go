@@ -1,38 +1,38 @@
 package heapsort
 
-func HeapSort(elements []int) {
-	l := len(elements)
+func HeapSort(nums []int) {
+	l := len(nums)
 	for k := l / 2; k >= 1; k-- {
-		sink(elements, k, l)
+		sink(nums, k, l)
 	}
 	for l > 1 {
-		swap(elements, 1, l)
+		swap(nums, 1, l)
 		l--
-		sink(elements, 1, l)
+		sink(nums, 1, l)
 	}
 }
 
-func sink(elements []int, k, l int) {
+func sink(nums []int, k, l int) {
 	for 2*k <= l {
 		j := 2 * k
-		if j < l && less(elements, j, j+1) {
+		if j < l && less(nums, j, j+1) {
 			j++
 		}
-		if !less(elements, k, j) {
+		if !less(nums, k, j) {
 			break
 		}
-		swap(elements, k, j)
+		swap(nums, k, j)
 		k = j
 	}
 }
 
-func less(elements []int, i, j int) bool {
-	if elements[i-1] < elements[j-1] {
+func less(nums []int, i, j int) bool {
+	if nums[i-1] < nums[j-1] {
 		return true
 	}
 	return false
 }
 
-func swap(elements []int, i, j int) {
-	elements[i-1], elements[j-1] = elements[j-1], elements[i-1]
+func swap(nums []int, i, j int) {
+	nums[i-1], nums[j-1] = nums[j-1], nums[i-1]
 }

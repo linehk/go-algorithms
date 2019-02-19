@@ -1,16 +1,17 @@
 package bubbleSort
 
-func BubbleSort(elements []int) {
-	for i := 0; i < len(elements)-1; i++ {
-		changed := false
-		for j := 0; j < len(elements)-1-i; j++ {
-			if elements[j] > elements[j+1] {
-				elements[j], elements[j+1] = elements[j+1], elements[j]
-				changed = true
+func BubbleSort(nums []int) {
+	l := len(nums)
+	for i := 0; i < l-1; i++ {
+		isSorted := false
+		for j := 0; j < l-1-i; j++ {
+			if nums[j] > nums[j+1] {
+				nums[j], nums[j+1] = nums[j+1], nums[j]
+				isSorted = true
 			}
 		}
 		// break if didn't swap element
-		if !changed {
+		if !isSorted {
 			break
 		}
 	}

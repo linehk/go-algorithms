@@ -2,39 +2,35 @@ package quicksort
 
 var cutoff = 20
 
-func QuickSort(elements []int) {
-	sort(elements, 0, len(elements)-1)
+func QuickSort(nums []int) {
+	sort(nums, 0, len(nums)-1)
 }
 
-func sort(elements []int, lo, hi int) {
-	if lo >= hi {
+func sort(nums []int, lo, hi int) {
+	if hi <= lo {
 		return
 	}
-	// n := hi - lo + 1
-	// if n <= cutoff {
-	// 	insertionSort(elements, lo, hi+1)
-	// 	return
-	// }
-	p := partition(elements, lo, hi)
-	sort(elements, lo, p-1)
-	sort(elements, p+1, hi)
+	p := partition(nums, lo, hi)
+	sort(nums, lo, p-1)
+	sort(nums, p+1, hi)
 }
 
-func partition(elements []int, lo, hi int) int {
+func partition(nums []int, lo, hi int) int {
 	i, j := lo, hi
-	pivotIndex, pivot := getPivot(elements, lo, hi)
+	pivotIndex, pivot := lo, nums[lo]
 	for i < j {
-		for i < j && elements[j] > pivot {
+		for i < j && nums[j] > pivot {
 			j--
 		}
-		for i < j && elements[i] <= pivot {
+		for i < j && nums[i] <= pivot {
 			i++
 		}
-		if i < j {
-			elements[i], elements[j] = elements[j], elements[i]
+		if i >= j {
+			break
 		}
+		nums[i], nums[j] = nums[j], nums[i]
 	}
-	elements[i], elements[pivotIndex] = elements[pivotIndex], elements[i]
+	nums[i], nums[pivotIndex] = nums[pivotIndex], nums[i]
 	return i
 }
 

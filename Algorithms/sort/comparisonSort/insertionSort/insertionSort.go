@@ -1,16 +1,12 @@
 package insertionSort
 
-func InsertionSort(elements []int) {
-	for i := 1; i < len(elements); i++ {
-		tmp := elements[i]
-		j := i
-		for ; j > 0; j-- {
-			if elements[j] < elements[j-1] {
-				elements[j] = elements[j-1]
+func InsertionSort(nums []int) {
+	for i := 1; i < len(nums); i++ {
+		for j := i; j > 0; j-- {
+			if nums[j-1] > nums[j] {
+				nums[j-1], nums[j] = nums[j], nums[j-1]
 			}
-
 		}
-		elements[j] = tmp
 	}
 }
 
