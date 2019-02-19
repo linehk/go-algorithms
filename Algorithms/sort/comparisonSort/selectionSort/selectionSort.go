@@ -1,10 +1,9 @@
 package selectionSort
 
 func SelectionSort(nums []int) {
-	l := len(nums)
-	for i := 0; i < l-1; i++ {
+	for i := 0; i < len(nums)-1; i++ {
 		min := i
-		for j := i + 1; j < l; j++ {
+		for j := i + 1; j < len(nums); j++ {
 			if nums[j] < nums[min] {
 				min = j
 			}
