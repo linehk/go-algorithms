@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestShellSort(t *testing.T) {
+func TestHeapSort(t *testing.T) {
 	tests := []struct {
 		input []int
 	}{
