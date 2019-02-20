@@ -2,12 +2,12 @@ package selectionSort
 
 func SelectionSort(nums []int) {
 	for i := 0; i < len(nums)-1; i++ {
-		min := i
+		minIndex := i
 		for j := i + 1; j < len(nums); j++ {
-			if nums[j] < nums[min] {
-				min = j
+			if nums[j] < nums[minIndex] {
+				minIndex = j
 			}
 		}
-		nums[i], nums[min] = nums[min], nums[i]
+		nums[i], nums[minIndex] = nums[minIndex], nums[i]
 	}
 }

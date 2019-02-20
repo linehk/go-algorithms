@@ -1,13 +1,12 @@
 package mergeSort
 
 func MergeSort(nums []int) {
-	l := len(nums)
-	aux := make([]int, l)
-	sort(nums, aux, 0, l-1)
+	aux := make([]int, len(nums))
+	sort(nums, aux, 0, len(nums)-1)
 }
 
 func sort(nums, aux []int, lo, hi int) {
-	if hi <= lo {
+	if lo >= hi {
 		return
 	}
 	mid := lo + (hi-lo)>>1
@@ -22,8 +21,7 @@ func merge(nums, aux []int, lo, mid, hi int) {
 	}
 
 	i := lo
-	j := mid + 1 // right part begin index
-
+	j := mid + 1
 	for k := lo; k <= hi; k++ {
 		if i > mid {
 			nums[k] = aux[j]
@@ -32,7 +30,7 @@ func merge(nums, aux []int, lo, mid, hi int) {
 			nums[k] = aux[i]
 			i++
 		} else if aux[i] <= aux[j] {
-			nums[k] = aux[i] // 先进行这一步，保证稳定性
+			nums[k] = aux[i]
 			i++
 		} else {
 			nums[k] = aux[j]

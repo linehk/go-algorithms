@@ -7,7 +7,7 @@ func QuickSort(nums []int) {
 }
 
 func sort(nums []int, lo, hi int) {
-	if hi <= lo {
+	if lo >= hi {
 		return
 	}
 	p := partition(nums, lo, hi)
@@ -16,8 +16,10 @@ func sort(nums []int, lo, hi int) {
 }
 
 func partition(nums []int, lo, hi int) int {
+	pivotIndex := lo
+	pivot := nums[pivotIndex]
+
 	i, j := lo, hi
-	pivotIndex, pivot := lo, nums[lo]
 	for i < j {
 		for i < j && nums[j] > pivot {
 			j--
@@ -25,10 +27,9 @@ func partition(nums []int, lo, hi int) int {
 		for i < j && nums[i] <= pivot {
 			i++
 		}
-		if i >= j {
-			break
+		if i < j {
+			nums[i], nums[j] = nums[j], nums[i]
 		}
-		nums[i], nums[j] = nums[j], nums[i]
 	}
 	nums[i], nums[pivotIndex] = nums[pivotIndex], nums[i]
 	return i
