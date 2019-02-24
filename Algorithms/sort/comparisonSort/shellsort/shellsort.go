@@ -7,7 +7,7 @@ func ShellSort(nums []int) {
 	}
 
 	for ; h >= 1; h /= 3 {
-		for i := 0; i < len(nums); i++ {
+		for i := h; i < len(nums); i++ {
 			for j := i; j >= h; j -= h {
 				if nums[j-h] > nums[j] {
 					nums[j-h], nums[j] = nums[j], nums[j-h]
