@@ -3,7 +3,7 @@ package array
 import (
 	"testing"
 
-	"github.com/linehk/GoAlgorithms/utils"
+	"github.com/linehk/go-algorithms/utils"
 )
 
 func TestGet(t *testing.T) {

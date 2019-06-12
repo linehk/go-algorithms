@@ -2,7 +2,7 @@
 package dijkstraDoubleStack
 
 import (
-	"GoAlgorithms/DataStructures/stack/linkedListStack"
+	"github.com/linehk/go-algorithms/dataStructure/stack/linkedListStack"
 )
 
 func Eval(expression string) int {

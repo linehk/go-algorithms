@@ -1,9 +1,9 @@
-package arrayStack
+package linkedListStack
 
 import (
 	"testing"
 
-	"GoAlgorithms/utils"
+	"github.com/linehk/go-algorithms/utils"
 )
 
 func TestStack(t *testing.T) {
@@ -14,11 +14,9 @@ func TestStack(t *testing.T) {
 		{[]interface{}{0, 1, 2, 3}, []interface{}{3, 2, 1, 0}},
 	}
 	for i, tt := range tests {
-		s := New(len(tt.seq))
+		s := New()
 		for _, v := range tt.seq {
-			if err := s.Push(v); err != nil {
-				t.Error(err)
-			}
+			s.Push(v)
 		}
 
 		got := make([]interface{}, 0)
