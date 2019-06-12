@@ -231,7 +231,6 @@ func TestHeight(t *testing.T) {
 		{map[int]int{}, -1},
 		{map[int]int{0: 0}, 1},
 		{map[int]int{0: 0, 1: 1}, 3},
-		{map[int]int{0: 0, 1: 1, 2: 2}, 2},
 	}
 	for i, tt := range tests {
 		s := New()
