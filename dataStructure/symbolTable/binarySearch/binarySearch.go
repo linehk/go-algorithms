@@ -34,10 +34,7 @@ func (s *st) resize(cap int) {
 
 func (s st) Contains(key int) bool {
 	_, err := s.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (s st) Get(key int) (int, error) {

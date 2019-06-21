@@ -40,10 +40,7 @@ func (b bst) size(n *node) int {
 
 func (b bst) Contains(key int) bool {
 	_, err := b.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (b bst) Get(key int) (int, error) {

@@ -32,10 +32,7 @@ func (s st) IsEmpty() bool {
 
 func (s st) Contains(key string) bool {
 	_, err := s.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (s st) Get(key string) (int, error) {

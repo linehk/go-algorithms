@@ -27,10 +27,7 @@ func sink(nums []int, k, l int) {
 }
 
 func less(nums []int, i, j int) bool {
-	if nums[i-1] < nums[j-1] {
-		return true
-	}
-	return false
+	return nums[i-1] < nums[j-1]
 }
 
 func swap(nums []int, i, j int) {

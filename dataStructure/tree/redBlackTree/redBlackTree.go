@@ -30,7 +30,8 @@ func (b bst) isRed(n *node) bool {
 	if n == nil {
 		return false
 	}
-	return n.color == RED
+	// return n.color == RED
+	return n.color
 }
 
 func (b bst) Size() int {
@@ -77,10 +78,7 @@ func (b bst) get(n *node, key int) (*node, error) {
 
 func (b bst) Contains(key int) bool {
 	_, err := b.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (b *bst) Put(key int, value int) {

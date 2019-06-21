@@ -182,10 +182,7 @@ func (h *heap) Delete(i int) error {
 }
 
 func (h heap) greater(i, j int) bool {
-	if h.keys[h.index[i]] > h.keys[h.index[j]] {
-		return true
-	}
-	return false
+	return h.keys[h.index[i]] > h.keys[h.index[j]]
 }
 
 func (h *heap) exch(i, j int) {

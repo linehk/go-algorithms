@@ -65,9 +65,7 @@ func CopySlice(s []interface{}) []interface{} {
 	}
 
 	newSlice := make([]interface{}, cap(s))
-	for i, v := range s {
-		newSlice[i] = v
-	}
+	copy(newSlice, s)
 	return newSlice
 }
 

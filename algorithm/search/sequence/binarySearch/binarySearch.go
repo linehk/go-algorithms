@@ -16,7 +16,7 @@ func BinarySearch(elements []int, key int) bool {
 	return false
 }
 
-func binarySearch(elements []int, key int) int {
+func BinarySearchIndex(elements []int, key int) int {
 	lo := 0
 	hi := len(elements) - 1
 	for lo <= hi {
@@ -32,7 +32,7 @@ func binarySearch(elements []int, key int) int {
 	return lo
 }
 
-func binarySearchFirst(elements []int, key int) int {
+func BinarySearchFirst(elements []int, key int) int {
 	lo := 0
 	hi := len(elements) - 1
 	for lo <= hi {

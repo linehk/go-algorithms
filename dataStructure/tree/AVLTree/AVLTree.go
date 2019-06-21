@@ -74,10 +74,7 @@ func (b bst) get(n *node, key int) (*node, error) {
 
 func (b bst) Contains(key int) bool {
 	_, err := b.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (b *bst) Put(key int, value int) {

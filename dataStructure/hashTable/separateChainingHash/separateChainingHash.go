@@ -31,10 +31,7 @@ func (l list) get(key string) (int, error) {
 
 func (l list) contains(key string) bool {
 	_, err := l.get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err != nil
 }
 
 func (l *list) put(key string, value int) {
@@ -83,10 +80,7 @@ func (s st) IsEmpty() bool {
 
 func (s st) Contains(key string) bool {
 	_, err := s.Get(key)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (s st) Get(key string) (int, error) {

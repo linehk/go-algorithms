@@ -1,6 +1,6 @@
 package quicksort
 
-var cutoff = 20
+// var cutoff = 20
 
 func QuickSort(nums []int) {
 	sort(nums, 0, len(nums)-1)
@@ -35,6 +35,7 @@ func partition(nums []int, lo, hi int) int {
 	return i
 }
 
+/*
 func insertionSort(elements []int, lo, hi int) {
 	for i := lo + 1; i < hi; i++ {
 		for j := i; j > lo; j-- {
@@ -67,6 +68,7 @@ func getPivotMedian(elements []int, lo, hi int) (int, int) {
 	}
 	return mid, elements[mid]
 }
+*/
 
 func Quick3way(elements []int) {
 	sort3way(elements, 0, len(elements)-1)
