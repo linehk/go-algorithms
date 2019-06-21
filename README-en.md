@@ -16,12 +16,6 @@ This repo does not follow the best practices of the Golang, just to learn about 
 git clone https://github.com/linehk/go-algorithms.git
 ```
 
-Or:
-
-```bash
-go get -u github.com/linehk/go-algorithms
-```
-
 ## Contributing
 
 If you feel that there is something to improve my implements, please feel free to launch Pull Request.

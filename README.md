@@ -16,12 +16,6 @@ go-algorithms 是一个保存了 Go 语言实现的数据结构和算法的仓�
 git clone https://github.com/linehk/go-algorithms.git
 ```
 
-或者：
-
-```bash
-go get -u github.com/linehk/go-algorithms
-```
-
 ## 参与贡献
 
 如果你觉得我的实现有什么需要改进的地方，欢迎发起 Pull Request。
