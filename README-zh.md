@@ -1,6 +1,5 @@
 # go-algorithms
 
-[![Build Status](https://travis-ci.org/linehk/go-algorithms.svg?branch=master)](https://travis-ci.org/linehk/go-algorithms)
 [![codecov](https://codecov.io/gh/linehk/go-algorithms/branch/master/graph/badge.svg)](https://codecov.io/gh/linehk/go-algorithms)
 [![Go Report Card](https://goreportcard.com/badge/github.com/linehk/go-algorithms)](https://goreportcard.com/report/github.com/linehk/go-algorithms)
 
