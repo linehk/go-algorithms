@@ -109,7 +109,7 @@ func (l list) Show() string {
 		cur = cur.next
 		format += fmt.Sprintf("%v", cur.value)
 		if cur.next != l.head {
-			format += fmt.Sprint("->")
+			format += "->"
 		}
 	}
 	return format

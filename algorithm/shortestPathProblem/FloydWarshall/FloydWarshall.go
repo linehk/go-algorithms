@@ -1,1 +1,1 @@
-package Floyd_Warshall
+package FloydWarshall

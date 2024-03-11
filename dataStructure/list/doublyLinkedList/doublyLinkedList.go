@@ -112,7 +112,7 @@ func (l list) Show() string {
 		cur = cur.next
 		format += fmt.Sprintf("%v", cur.value)
 		if cur.next != nil {
-			format += fmt.Sprint("->")
+			format += "->"
 		}
 	}
 	return format

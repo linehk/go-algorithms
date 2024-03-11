@@ -1,1 +1,1 @@
-package Bellman_Ford
+package BellmanFord
