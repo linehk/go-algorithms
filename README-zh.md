@@ -1,7 +1,8 @@
 # go-algorithms
 
-[![codecov](https://codecov.io/gh/linehk/go-algorithms/branch/master/graph/badge.svg)](https://codecov.io/gh/linehk/go-algorithms)
-[![Go Report Card](https://goreportcard.com/badge/github.com/linehk/go-algorithms)](https://goreportcard.com/report/github.com/linehk/go-algorithms)
+[![build](https://github.com/linehk/go-algorithms/actions/workflows/build.yml/badge.svg "build")](https://github.com/linehk/go-algorithms/actions)
+[![codecov](https://codecov.io/gh/linehk/go-algorithms/graph/badge.svg "codecov")](https://codecov.io/gh/linehk/go-algorithms)
+[![go report](https://goreportcard.com/badge/github.com/linehk/go-algorithms "go report")](https://goreportcard.com/report/github.com/linehk/go-algorithms)
 
 [English](./README.md "English") | 简体中文
 
